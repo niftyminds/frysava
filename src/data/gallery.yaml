@@ -1,0 +1,79 @@
+# Kategorizace fotografií pro galerii
+
+categories:
+  - id: "exterior"
+    name: "Exteriér"
+    description: "Venkovní pohledy na chalupu"
+    order: 1
+
+  - id: "winter"
+    name: "Zimní atmosféra"
+    description: "Chalupa v zimě"
+    order: 2
+
+  - id: "rooms"
+    name: "Pokoje"
+    description: "Ložnice a společné prostory"
+    order: 3
+
+  - id: "kitchen"
+    name: "Kuchyně"
+    description: "Vybavená kuchyně"
+    order: 4
+
+  - id: "bathroom"
+    name: "Koupelny"
+    description: "Koupelny a sociální zařízení"
+    order: 5
+
+  - id: "sauna"
+    name: "Sauna"
+    description: "Sauna pro 5 osob"
+    order: 6
+
+  - id: "pub"
+    name: "Výčep"
+    description: "Profesionální výčepní zařízení"
+    order: 7
+
+  - id: "floorplans"
+    name: "Půdorysy"
+    description: "Rozložení chalupy"
+    order: 8
+
+  - id: "surroundings"
+    name: "Okolí"
+    description: "Fryšava a okolí"
+    order: 9
+
+# Mapování fotografií na kategorie (bude aktualizováno po zpracování fotek)
+images:
+  # Exteriér (4 fotografie)
+  - filename: "exterier-1.jpg"
+    category: "exterior"
+    alt: "Pohled na chalupu z hlavní cesty"
+    featured: true
+
+  - filename: "exterier-2.jpg"
+    category: "exterior"
+    alt: "Chalupa z boku"
+
+  - filename: "exterier-3.jpg"
+    category: "exterior"
+    alt: "Vstup do chalupy"
+
+  - filename: "exterier-4.jpg"
+    category: "exterior"
+    alt: "Zadní část chalupy s ohništěm"
+
+  # Zimní scenérie (2 fotografie)
+  - filename: "zima-1.jpg"
+    category: "winter"
+    alt: "Chalupa v zimě"
+
+  - filename: "zima-2.jpg"
+    category: "winter"
+    alt: "Zasněžená chalupa"
+
+  # TODO: Doplnit další fotky po jejich zpracování
+  # Celkem: 32 fotografií

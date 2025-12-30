@@ -1,0 +1,301 @@
+---
+const slides = [
+  {
+    id: 1,
+    text: "Naše chalupa je prastará. Údajně zde byla vyrobena jedna z prvních lyží pod Žákovou horou. Věřte ale vesnickým povídačkám... Zamilovali jsme si to místo a postupně ho zrekonstruovali ve velkolepý prostor pro milovníky výletů, bicyklů, pusy plné borůvek, zimní stopy, pikniku na pasece a Vysočiny...",
+    image: "/images/large/chalupa-frysava-pod-zakovou-horou-8dac-570472.webp",
+    imageAlt: "Chalupa na Fryšavě pod Žákovou horou"
+  },
+  {
+    id: 2,
+    text: "Chalupa jako u babičky. Původní citlivě zkombinované s novým, komfortní, funkční a půvabné. Podkroví s výměrou téměř 90m² je jako taneční sál, který vás večer obejme a družnou nocí po boku kamarádů přenese do dalšího prázdninového rána. Pro děti tu máme vyvýšenou galerii - expediční stan, dům na stromě, observatoř i nedobytnou letadlovou loď všech dětských her a snů.",
+    image: "/images/large/pokoj-v-pro-8-osob-8993-570485.webp",
+    imageAlt: "Interiér chalupy - podkroví pro 8 osob"
+  },
+  {
+    id: 3,
+    text: "Umístění chalupy nemůže být lepší. Z okna večer vidíte nasvícený kostel, ráno vás budí ptáci, do obchodu je to pět minut pěšky. Rybník Brádelák je za domem, bajkeři a lyžaři startují do svých tras hned za chalupou. S pusou modrou od borůvek si užíváte ten prázdninový pocit.",
+    image: "/images/large/frysava-pod-zakovou-horou-a848-570475.webp",
+    imageAlt: "Pohled na Fryšavu pod Žákovou horou"
+  }
+];
+
+const totalSlides = slides.length;
+---
+
+<section id="o-chalupe" class="section bg-sand-50">
+  <div class="container">
+    <h2 class="text-center mb-16 md:mb-20">O chalupě</h2>
+
+    <!-- Story Carousel -->
+    <div class="max-w-6xl mx-auto">
+      <div class="about-carousel relative" data-about-carousel>
+
+        <!-- Story Progress Indicator -->
+        <nav class="story-progress mb-8 md:mb-12" aria-label="Navigace příběhu">
+          <div class="flex items-center justify-center gap-6">
+            {slides.map((_, index) => (
+              <button
+                class="story-progress__item"
+                data-slide-index={index}
+                aria-label={`Kapitola ${index + 1} z ${totalSlides}`}
+                aria-current={index === 0 ? 'step' : undefined}
+              >
+                <span class="story-progress__number">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+              </button>
+            ))}
+          </div>
+          <div class="story-progress__divider mt-4">
+            <div class="story-progress__line"></div>
+            <div class="story-progress__line-active"></div>
+          </div>
+        </nav>
+
+        <!-- Carousel Container -->
+        <div class="embla overflow-hidden">
+          <div class="embla__container">
+            {slides.map((slide, index) => (
+              <div class="embla__slide" data-slide-id={slide.id}>
+                <article class={`story-slide grid md:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center ${index % 2 === 1 ? 'story-slide--reversed' : ''}`}>
+
+                  <!-- Text Content -->
+                  <div class={`story-slide__content md:col-span-5 ${index % 2 === 1 ? 'md:col-start-8' : 'md:col-start-1'}`}>
+                    <div class="story-slide__ornament mb-6">
+                      <span class="block w-12 h-px bg-moss-400"></span>
+                    </div>
+                    <p class="story-slide__text text-xl md:text-2xl lg:text-[26px] leading-[1.85] font-serif italic text-charcoal-800">
+                      {slide.text}
+                    </p>
+                  </div>
+
+                  <!-- Image -->
+                  <figure class={`story-slide__image md:col-span-6 ${index % 2 === 1 ? 'md:col-start-1 md:row-start-1' : 'md:col-start-7'}`}>
+                    <div class="story-slide__image-wrapper">
+                      <img
+                        src={slide.image}
+                        alt={slide.imageAlt}
+                        class="w-full rounded-xl shadow-lg aspect-[4/3] object-cover"
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                      />
+                    </div>
+                  </figure>
+
+                </article>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Keyboard Navigation Hint (screen readers + visual) -->
+        <p class="sr-only">
+          Použijte šipky vlevo a vpravo pro navigaci mezi kapitolami příběhu.
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* Story Progress Indicator */
+  .story-progress {
+    text-align: center;
+  }
+
+  .story-progress__item {
+    @apply relative px-2 py-1 transition-all duration-300;
+  }
+
+  .story-progress__number {
+    @apply font-serif text-lg md:text-xl text-charcoal-400 transition-all duration-300;
+    letter-spacing: 0.05em;
+  }
+
+  .story-progress__item:hover .story-progress__number {
+    @apply text-charcoal-600;
+  }
+
+  .story-progress__item.is-active .story-progress__number {
+    @apply text-moss-600 text-xl md:text-2xl font-medium;
+  }
+
+  .story-progress__item::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-moss-500 transition-all duration-300;
+  }
+
+  .story-progress__item.is-active::after {
+    @apply w-full;
+  }
+
+  /* Divider line with progress */
+  .story-progress__divider {
+    @apply relative max-w-xs mx-auto;
+  }
+
+  .story-progress__line {
+    @apply h-px bg-sand-300 w-full;
+  }
+
+  .story-progress__line-active {
+    @apply absolute top-0 left-0 h-px bg-moss-500 transition-all duration-500 ease-out;
+    width: 0%;
+  }
+
+  /* Carousel Slides */
+  .about-carousel .embla__container {
+    display: flex;
+  }
+
+  .about-carousel .embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+
+  /* Story Slide Animations */
+  .story-slide__content,
+  .story-slide__image-wrapper {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 600ms ease-out, transform 600ms ease-out;
+  }
+
+  .embla__slide.is-active .story-slide__content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .embla__slide.is-active .story-slide__image-wrapper {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 150ms;
+  }
+
+  /* Image wrapper for subtle zoom effect */
+  .story-slide__image-wrapper {
+    @apply overflow-hidden rounded-xl;
+  }
+
+  .story-slide__image-wrapper img {
+    @apply transition-transform duration-700 ease-out;
+  }
+
+  .embla__slide.is-active .story-slide__image-wrapper img {
+    transform: scale(1.02);
+  }
+
+  /* Ornament animation */
+  .story-slide__ornament span {
+    @apply transition-all duration-500 ease-out;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .embla__slide.is-active .story-slide__ornament span {
+    transform: scaleX(1);
+  }
+
+  /* Screen reader only utility */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  /* Prefers reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .story-slide__content,
+    .story-slide__image-wrapper,
+    .story-slide__ornament span,
+    .story-progress__line-active {
+      transition: none;
+      transform: none;
+      opacity: 1;
+    }
+
+    .embla__slide.is-active .story-slide__image-wrapper img {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  import EmblaCarousel from 'embla-carousel';
+
+  function initAboutCarousel() {
+    var emblaNode = document.querySelector('[data-about-carousel] .embla');
+    var progressItems = document.querySelectorAll('.story-progress__item');
+    var progressLineActive = document.querySelector('.story-progress__line-active');
+
+    if (!emblaNode) return;
+
+    var embla = EmblaCarousel(emblaNode, {
+      loop: false,
+      duration: 40,
+      skipSnaps: false
+    });
+
+    var slides = emblaNode.querySelectorAll('.embla__slide');
+    var totalSlides = slides.length;
+
+    function updateActiveSlide() {
+      var selectedIndex = embla.selectedScrollSnap();
+
+      // Update slides
+      slides.forEach(function(slide, index) {
+        slide.classList.toggle('is-active', index === selectedIndex);
+      });
+
+      // Update progress indicators
+      progressItems.forEach(function(item, index) {
+        var isActive = index === selectedIndex;
+        item.classList.toggle('is-active', isActive);
+        item.setAttribute('aria-current', isActive ? 'step' : '');
+      });
+
+      // Update progress line
+      if (progressLineActive) {
+        var progressPercent = ((selectedIndex + 1) / totalSlides) * 100;
+        progressLineActive.style.width = progressPercent + '%';
+      }
+    }
+
+    // Progress indicator click navigation
+    progressItems.forEach(function(item, index) {
+      item.addEventListener('click', function() {
+        embla.scrollTo(index);
+      });
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      var rect = emblaNode.getBoundingClientRect();
+      var carouselInView = rect.top < window.innerHeight && rect.bottom > 0;
+
+      if (!carouselInView) return;
+
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        embla.scrollPrev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        embla.scrollNext();
+      }
+    });
+
+    embla.on('select', updateActiveSlide);
+    embla.on('init', updateActiveSlide);
+    updateActiveSlide();
+
+    console.log('About carousel initialized');
+  }
+
+  // Run initialization when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAboutCarousel);
+  } else {
+    initAboutCarousel();
+  }
+</script>

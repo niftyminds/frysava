@@ -1,0 +1,156 @@
+---
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
+
+const siteDataPath = path.join(process.cwd(), 'src/data/site.yaml');
+const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
+
+const carouselImages = [
+  '/images/large/chalupa-frysava-pod-zakovou-horou-8dac-570472.webp',
+  '/images/large/exterier-chalupy-c9c9-570474.webp',
+  '/images/large/zima-na-vysocine-9ca3-570470.webp',
+  '/images/large/zima-na-vysocine-044d-570471.webp',
+];
+---
+
+<section id="uvod" class="relative h-screen min-h-[600px] overflow-hidden">
+  <!-- Carousel Container -->
+  <div class="embla h-full" data-embla>
+    <div class="embla__container h-full">
+      {carouselImages.map((image, index) => (
+        <div class="embla__slide relative h-full">
+          <img
+            src={image}
+            alt={`Chalupa na Fryšavě ${index + 1}`}
+            class="w-full h-full object-cover"
+            loading={index === 0 ? 'eager' : 'lazy'}
+          />
+          <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Content Overlay -->
+  <div class="absolute inset-0 z-10 flex items-center justify-center">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-medium mb-6 text-white drop-shadow-lg">
+        {siteData.name}
+      </h1>
+      <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto text-white/90 drop-shadow-md font-light tracking-wide">
+        Tady chci zpomalit a být
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="#kontakt" class="btn-primary text-lg px-10 py-4 inline-block">
+          Poptat termín
+        </a>
+        <a
+          href="#o-chalupe"
+          class="inline-block px-10 py-4 text-lg font-medium text-white border-2 border-white/80 hover:bg-white/10 hover:border-white transition-all duration-200 rounded-lg"
+        >
+          Více informací
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Carousel Navigation Dots -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex gap-3" id="carousel-dots">
+    {carouselImages.map((_, index) => (
+      <button
+        class="carousel-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-300"
+        data-index={index}
+        aria-label={`Přejít na obrázek ${index + 1}`}
+      ></button>
+    ))}
+  </div>
+</section>
+
+<style>
+  .embla {
+    overflow: hidden;
+  }
+  .embla__container {
+    display: flex;
+    height: 100%;
+  }
+  .embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+
+  /* Fade transition effect */
+  .embla__slide {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .embla__slide.is-active {
+    opacity: 1;
+  }
+
+  /* Carousel dots active state */
+  .carousel-dot.is-active {
+    @apply bg-white w-8 scale-100;
+  }
+</style>
+
+<script>
+  import EmblaCarousel from 'embla-carousel';
+  import Autoplay from 'embla-carousel-autoplay';
+
+  const emblaNode = document.querySelector('[data-embla]');
+  const dotsContainer = document.getElementById('carousel-dots');
+
+  if (emblaNode) {
+    const embla = EmblaCarousel(emblaNode, {
+      loop: true,
+      duration: 70,
+    }, [
+      Autoplay({
+        delay: 7000,
+        stopOnInteraction: false,
+      })
+    ]);
+
+    const slides = emblaNode.querySelectorAll('.embla__slide');
+    const dots = dotsContainer?.querySelectorAll('.carousel-dot');
+
+    const updateActiveSlide = () => {
+      const selectedIndex = embla.selectedScrollSnap();
+
+      // Update slides
+      slides.forEach((slide, index) => {
+        if (index === selectedIndex) {
+          slide.classList.add('is-active');
+        } else {
+          slide.classList.remove('is-active');
+        }
+      });
+
+      // Update dots
+      dots?.forEach((dot, index) => {
+        if (index === selectedIndex) {
+          dot.classList.add('is-active');
+        } else {
+          dot.classList.remove('is-active');
+        }
+      });
+    };
+
+    // Click on dot to navigate
+    dots?.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        embla.scrollTo(index);
+      });
+    });
+
+    embla.on('select', updateActiveSlide);
+    embla.on('init', updateActiveSlide);
+
+    updateActiveSlide();
+  }
+</script>

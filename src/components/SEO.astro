@@ -1,0 +1,67 @@
+---
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
+
+const siteDataPath = path.join(process.cwd(), 'src/data/site.yaml');
+const pricingDataPath = path.join(process.cwd(), 'src/data/pricing.yaml');
+
+const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
+const pricingData = yaml.load(fs.readFileSync(pricingDataPath, 'utf8'));
+
+// Structured Data - LodgingBusiness Schema
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "name": siteData.name,
+  "description": siteData.description,
+  "image": "/images/large/chalupa-frysava-pod-zakovou-horou-590d-570473.webp",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": siteData.location.address,
+    "addressRegion": siteData.location.region,
+    "addressCountry": siteData.location.country
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": siteData.location.gps.lat,
+    "longitude": siteData.location.gps.lng
+  },
+  "telephone": siteData.contact.phone,
+  "email": siteData.contact.email,
+  "url": Astro.site,
+  "priceRange": `${Math.min(...pricingData.seasons.map(s => s.price_per_person))}-${Math.max(...pricingData.seasons.map(s => s.price_per_person))} Kč/osoba/noc`,
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": siteData.rating.score,
+    "reviewCount": siteData.rating.reviews_count
+  },
+  "amenityFeature": [
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Sauna",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "WiFi",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Parking",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "PetsAllowed",
+      "value": true
+    }
+  ],
+  "numberOfRooms": siteData.capacity.bedrooms,
+  "petsAllowed": true
+};
+---
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

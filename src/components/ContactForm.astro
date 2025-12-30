@@ -1,0 +1,255 @@
+---
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
+
+const siteDataPath = path.join(process.cwd(), 'src/data/site.yaml');
+const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
+
+// TODO: V budoucnu nahradit skutečným Formspree endpoint
+const formspreeEndpoint = "https://formspree.io/f/YOUR_FORM_ID"; // PLACEHOLDER
+---
+
+<section id="kontakt" class="section bg-white">
+  <div class="container">
+    <h2 class="text-center mb-4">Kontakt a poptávka</h2>
+    <p class="text-center text-charcoal-600 mb-12 max-w-2xl mx-auto">
+      Vyplňte formulář nebo nás kontaktujte přímo
+    </p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+      <!-- Contact Info -->
+      <div>
+        <h3 class="text-2xl font-bold text-wood-900 mb-6">Kontaktní údaje</h3>
+
+        <div class="space-y-6 mb-8">
+          <div class="flex items-start gap-4">
+            <div class="bg-moss-100 p-3 rounded-lg">
+              <svg class="w-6 h-6 text-moss-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-wood-900">Email</p>
+              <a href={`mailto:${siteData.contact.email}`} class="text-moss-600 hover:text-moss-700">
+                {siteData.contact.email}
+              </a>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="bg-moss-100 p-3 rounded-lg">
+              <svg class="w-6 h-6 text-moss-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-wood-900">Telefon</p>
+              <a href={`tel:${siteData.contact.phone}`} class="text-moss-600 hover:text-moss-700">
+                {siteData.contact.phone}
+              </a>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="bg-moss-100 p-3 rounded-lg">
+              <svg class="w-6 h-6 text-moss-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-wood-900">Adresa</p>
+              <p class="text-charcoal-700">{siteData.location.address}</p>
+              <p class="text-charcoal-700">{siteData.location.region}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-moss-50 rounded-lg p-6 border border-moss-200">
+          <h4 class="font-semibold text-wood-900 mb-3">Reakční doba</h4>
+          <p class="text-sm text-charcoal-700">
+            Na vaše dotazy odpovídáme obvykle do 24 hodin. V případě urgentních dotazů nás prosím kontaktujte telefonicky.
+          </p>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div>
+        <form
+          action={formspreeEndpoint}
+          method="POST"
+          class="space-y-6"
+          id="contact-form"
+        >
+          <div>
+            <label for="name" class="block text-sm font-medium text-charcoal-700 mb-2">
+              Jméno a příjmení *
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full px-4 py-3 border border-sand-300 rounded-lg focus:ring-2 focus:ring-moss-500 focus:border-transparent outline-none transition"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="email" class="block text-sm font-medium text-charcoal-700 mb-2">
+                Email *
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full px-4 py-3 border border-sand-300 rounded-lg focus:ring-2 focus:ring-moss-500 focus:border-transparent outline-none transition"
+              />
+            </div>
+
+            <div>
+              <label for="phone" class="block text-sm font-medium text-charcoal-700 mb-2">
+                Telefon
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="w-full px-4 py-3 border border-sand-300 rounded-lg focus:ring-2 focus:ring-moss-500 focus:border-transparent outline-none transition"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="dateFrom" class="block text-sm font-medium text-charcoal-700 mb-2">
+                Příjezd
+              </label>
+              <input
+                type="date"
+                id="dateFrom"
+                name="dateFrom"
+                class="w-full px-4 py-3 border border-sand-300 rounded-lg focus:ring-2 focus:ring-moss-500 focus:border-transparent outline-none transition"
+              />
+            </div>
+
+            <div>
+              <label for="dateTo" class="block text-sm font-medium text-charcoal-700 mb-2">
+                Odjezd
+              </label>
+              <input
+                type="date"
+                id="dateTo"
+                name="dateTo"
+                class="w-full px-4 py-3 border border-sand-300 rounded-lg focus:ring-2 focus:ring-moss-500 focus:border-transparent outline-none transition"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="adults" class="block text-sm font-medium text-charcoal-700 mb-2">
+                Počet dospělých
+              </label>
+              <input
+                type="number"
+                id="adults"
+                name="adults"
+                min="1"
+                max="20"
+                class="w-full px-4 py-3 border border-sand-300 rounded-lg focus:ring-2 focus:ring-moss-500 focus:border-transparent outline-none transition"
+              />
+            </div>
+
+            <div>
+              <label for="children" class="block text-sm font-medium text-charcoal-700 mb-2">
+                Počet dětí
+              </label>
+              <input
+                type="number"
+                id="children"
+                name="children"
+                min="0"
+                max="10"
+                class="w-full px-4 py-3 border border-sand-300 rounded-lg focus:ring-2 focus:ring-moss-500 focus:border-transparent outline-none transition"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="pets" class="block text-sm font-medium text-charcoal-700 mb-2">
+              Berete si mazlíčka?
+            </label>
+            <select
+              id="pets"
+              name="pets"
+              class="w-full px-4 py-3 border border-sand-300 rounded-lg focus:ring-2 focus:ring-moss-500 focus:border-transparent outline-none transition"
+            >
+              <option value="ne">Ne</option>
+              <option value="ano">Ano (jeden)</option>
+              <option value="vice">Ano (více)</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-charcoal-700 mb-2">
+              Zpráva
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              class="w-full px-4 py-3 border border-sand-300 rounded-lg focus:ring-2 focus:ring-moss-500 focus:border-transparent outline-none transition resize-none"
+            ></textarea>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="gdpr"
+              name="gdpr"
+              required
+              class="mt-1 w-4 h-4 text-moss-600 border-sand-300 rounded focus:ring-moss-500"
+            />
+            <label for="gdpr" class="text-sm text-charcoal-700">
+              Souhlasím se zpracováním osobních údajů pro účely této poptávky. *
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full btn-primary text-lg py-4"
+          >
+            Odeslat poptávku
+          </button>
+
+          <p class="text-xs text-charcoal-500 text-center">
+            * Povinné pole
+          </p>
+        </form>
+
+        <!-- Success/Error Messages (hidden by default) -->
+        <div id="form-success" class="hidden mt-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
+          ✓ Děkujeme! Vaše poptávka byla úspěšně odeslána. Budeme vás kontaktovat co nejdříve.
+        </div>
+        <div id="form-error" class="hidden mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">
+          ✗ Omlouváme se, při odesílání formuláře došlo k chybě. Prosím kontaktujte nás přímo emailem nebo telefonicky.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Form submission handling (placeholder - will work with Formspree)
+  const form = document.getElementById('contact-form');
+  const successMsg = document.getElementById('form-success');
+  const errorMsg = document.getElementById('form-error');
+
+  form?.addEventListener('submit', async (e) => {
+    // Note: This is a basic placeholder. Formspree handles the actual submission.
+    // When Formspree is configured, it will redirect or show its own success message.
+  });
+</script>

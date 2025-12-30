@@ -1,0 +1,117 @@
+# Vybavení chalupy na Fryšavě
+
+categories:
+  - name: "Sociální zařízení"
+    icon: "droplet"
+    items:
+      - name: "3× koupelna"
+        available: true
+      - name: "2× sprchový kout"
+        available: true
+      - name: "3× WC"
+        available: true
+      - name: "Sauna pro 5 osob"
+        available: true
+        highlight: true
+      - name: "Pračka"
+        available: true
+
+  - name: "Kuchyně"
+    icon: "chef-hat"
+    items:
+      - name: "Plně vybavená kuchyně"
+        available: true
+      - name: "Myčka nádobí"
+        available: true
+      - name: "Kávovar a espresso stroj"
+        available: true
+      - name: "Mikrovlnná trouba"
+        available: true
+      - name: "Lednice a mraznička"
+        available: true
+      - name: "Kamna na dřevo s pečícími troubami"
+        available: true
+
+  - name: "Společné prostory"
+    icon: "home"
+    items:
+      - name: "Dvě jídelny"
+        available: true
+      - name: "Společenská místnost"
+        available: true
+      - name: "Prostorné podkroví (~90 m²)"
+        available: true
+        note: "S ložním polem a galerií pro děti"
+
+  - name: "Internet a technologie"
+    icon: "wifi"
+    items:
+      - name: "VDSL internet bez agregace"
+        available: true
+        highlight: true
+      - name: "Silný Wi-Fi signál v celém objektu"
+        available: true
+      - name: "TV se satelitními programy"
+        available: true
+      - name: "CD přehrávače"
+        available: true
+
+  - name: "Zábava a stravování"
+    icon: "beer"
+    items:
+      - name: "Profesionální výčepní zařízení"
+        available: true
+        highlight: true
+        note: "S chlazením"
+      - name: "Pivo Dalešice na čepu (11° a 12°)"
+        available: true
+        highlight: true
+
+  - name: "Venkovní vybavení"
+    icon: "tree-pine"
+    items:
+      - name: "Oplocený pozemek 300 m²"
+        available: true
+        highlight: true
+      - name: "Parkování pro 4 automobily"
+        available: true
+      - name: "Ohniště"
+        available: true
+      - name: "Gril"
+        available: true
+      - name: "Pískoviště"
+        available: true
+      - name: "Houpačka"
+        available: true
+      - name: "Trampolína"
+        available: true
+
+  - name: "Pro děti"
+    icon: "baby"
+    items:
+      - name: "Dětské hřiště 300 m od chalupy"
+        available: true
+      - name: "Prolézačky"
+        available: true
+      - name: "Půjčovna kol (dětská i dospělá)"
+        available: true
+      - name: "Terénní koloběžky"
+        available: true
+      - name: "Galerie v podkroví speciálně pro děti"
+        available: true
+
+  - name: "Mazlíčci"
+    icon: "dog"
+    items:
+      - name: "Mazlíčci vítáni"
+        available: true
+        note: "Za poplatek 300 Kč/noc"
+
+# Služby v lokalitě
+services:
+  - name: "Možnost objednání snídaně, polopenze nebo plné penze"
+    available: true
+  - name: "Pronájem jízdních kol a terénních koloběžek"
+    available: true
+  - name: "Uskladnění sportovního vybavení"
+    available: true

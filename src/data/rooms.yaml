@@ -1,0 +1,53 @@
+# Rozložení pokojů v chalupě
+
+rooms:
+  - id: 1
+    name: "Pokoj I"
+    capacity: 2
+    type: "Dvoulůžkový pokoj"
+    floor: "přízemí"
+    description: ""
+
+  - id: 2
+    name: "Pokoj II"
+    capacity: 3
+    type: "Třílůžkový pokoj"
+    floor: "přízemí"
+    description: ""
+
+  - id: 3
+    name: "Pokoj III"
+    capacity: 2
+    type: "Dvoulůžkový pokoj"
+    floor: "patro"
+    description: ""
+
+  - id: 4
+    name: "Pokoj IV"
+    capacity: 2
+    type: "Dvoulůžkový pokoj"
+    floor: "patro"
+    description: ""
+
+  - id: 5
+    name: "Pokoj V - Noclehárna"
+    capacity: 8
+    type: "Společná noclehárna"
+    floor: "patro"
+    description: "Ideální pro větší skupiny přátel nebo děti"
+    highlight: true
+
+  - id: 6
+    name: "Galerie (Pokoj VI)"
+    capacity: 4
+    type: "Galerie v podkroví"
+    floor: "podkroví"
+    description: "Prostorné podkroví (~90 m²) s ložním polem, speciálně navrženo pro děti"
+    highlight: true
+
+# Souhrn
+summary:
+  total_rooms: 6
+  plus_gallery: true
+  total_capacity: 20
+  note: "Možnost přistýlek pro až 26 osob celkem (za příplatek 500 Kč/osoba/noc)"

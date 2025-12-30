@@ -1,0 +1,104 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/original"
+public_folder: "/images/original"
+
+collections:
+  - name: "site"
+    label: "Nastavení webu"
+    files:
+      - label: "Základní informace"
+        name: "site"
+        file: "src/data/site.yaml"
+        fields:
+          - { label: "Název chalupy", name: "name", widget: "string" }
+          - { label: "Slogan", name: "slogan", widget: "string" }
+          - { label: "Popis", name: "description", widget: "text" }
+          - label: "Kontakt"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "Telefon", name: "phone", widget: "string" }
+          - label: "Rychlé benefity"
+            name: "highlights"
+            widget: "list"
+            field: { label: "Benefit", name: "benefit", widget: "string" }
+
+      - label: "Ceník"
+        name: "pricing"
+        file: "src/data/pricing.yaml"
+        fields:
+          - label: "Sezóny"
+            name: "seasons"
+            widget: "list"
+            fields:
+              - { label: "Název", name: "name", widget: "string" }
+              - { label: "Období", name: "period", widget: "string" }
+              - { label: "Cena za osobu", name: "price_per_person", widget: "number" }
+              - { label: "Měna", name: "currency", widget: "string", default: "Kč" }
+
+          - label: "Dodatečné poplatky"
+            name: "fees"
+            widget: "list"
+            fields:
+              - { label: "Název", name: "name", widget: "string" }
+              - { label: "Cena", name: "price", widget: "number" }
+              - { label: "Jednotka", name: "unit", widget: "string" }
+              - { label: "Povinné", name: "mandatory", widget: "boolean", default: false }
+
+          - label: "Check-in / Check-out"
+            name: "checkin_checkout"
+            widget: "object"
+            fields:
+              - { label: "Check-in od", name: "checkin_from", widget: "string" }
+              - { label: "Check-out do", name: "checkout_until", widget: "string" }
+              - { label: "Poznámka", name: "note", widget: "string", required: false }
+
+          - label: "Poznámky"
+            name: "notes"
+            widget: "list"
+            field: { label: "Poznámka", name: "note", widget: "string" }
+
+      - label: "Kalendář"
+        name: "calendar"
+        file: "src/data/calendar.yaml"
+        fields:
+          - { label: "Google Calendar Embed URL", name: "google_calendar_embed", widget: "string", required: false }
+
+          - label: "Obsazené termíny"
+            name: "occupied_dates"
+            widget: "list"
+            fields:
+              - { label: "Od", name: "from", widget: "date" }
+              - { label: "Do", name: "to", widget: "date" }
+              - label: "Status"
+                name: "status"
+                widget: "select"
+                options: ["obsazeno", "rezervace", "volno"]
+              - { label: "Poznámka", name: "note", widget: "string", required: false }
+
+          - label: "Poznámky"
+            name: "notes"
+            widget: "list"
+            field: { label: "Poznámka", name: "note", widget: "string" }
+
+      - label: "O chalupě"
+        name: "about"
+        file: "src/data/about.yaml"
+        fields:
+          - { label: "Popis", name: "description", widget: "text" }
+
+          - label: "Historie"
+            name: "history"
+            widget: "object"
+            fields:
+              - { label: "Nadpis", name: "title", widget: "string" }
+              - { label: "Obsah", name: "content", widget: "text" }
+
+          - label: "Speciální nabídky"
+            name: "special_offers"
+            widget: "list"
+            field: { label: "Nabídka", name: "offer", widget: "string" }

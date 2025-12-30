@@ -1,0 +1,85 @@
+---
+const faqs = [
+  {
+    question: "Jsou v chalupě vítáni domácí mazlíčci?",
+    answer: "Ano, domácí mazlíčci jsou vítáni! Poplatek za pobyt mazlíčka je 300 Kč/noc."
+  },
+  {
+    question: "Je chalupa vhodná pro děti?",
+    answer: "Ano, chalupa je ideální pro rodiny s dětmi. Máme oplocený pozemek, pískoviště, houpačku, trampolínu a speciální galerii v podkroví pro děti. Dětské hřiště je 300 m od chalupy."
+  },
+  {
+    question: "Kolik automobilů můžeme parkovat?",
+    answer: "Na pozemku je parkování pro 4 automobily zdarma."
+  },
+  {
+    question: "Je možné využít saunu?",
+    answer: "Ano, sauna je k dispozici pro 5 osob. Ohřev sauny stojí 700 Kč za 3 hodiny."
+  },
+  {
+    question: "Je v chalupě dostupný internet?",
+    answer: "Ano, máme VDSL internet bez agregace se silným Wi-Fi signálem v celém objektě. Ideální i pro práci na dálku."
+  },
+  {
+    question: "Funguje v chalupě výčep?",
+    answer: "Ano! Máme profesionální výčepní zařízení s chlazením. Na čepu je pivo Dalešice 11° a 12°."
+  },
+  {
+    question: "Jak daleko je obchod a restaurace?",
+    answer: "Obchod je 200 m od chalupy (5 minut pěšky), hospody a restaurace jsou 400 m."
+  },
+  {
+    question: "Jaké jsou check-in a check-out časy?",
+    answer: "Check-in je od 15:00, check-out do 10:00. Jiné časy je možné domluvit s majitelem."
+  },
+  {
+    question: "Je možné objednat stravu?",
+    answer: "Ano, nabízíme možnost objednání snídaně, polopenze nebo plné penze. Detaily je třeba domluvit předem."
+  },
+  {
+    question: "Jaká je minimální délka pobytu?",
+    answer: "Minimální délka pobytu je 2 noci. Výjimkou je Silvester, kdy pronajímáme pouze týdenní pobyt."
+  }
+];
+---
+
+<section id="faq" class="section bg-sand-50">
+  <div class="container">
+    <h2 class="text-center mb-4">Často kladené dotazy</h2>
+    <p class="text-center text-charcoal-600 mb-12 max-w-2xl mx-auto">
+      Odpovědi na nejčastější dotazy našich hostů
+    </p>
+
+    <div class="max-w-3xl mx-auto">
+      <div class="space-y-4">
+        {faqs.map((faq, index) => (
+          <details class="group bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-sand-200">
+            <summary class="cursor-pointer px-6 py-4 font-semibold text-wood-900 flex items-center justify-between list-none">
+              <span class="flex-1">{faq.question}</span>
+              <svg
+                class="w-5 h-5 text-moss-600 transform transition-transform group-open:rotate-180"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </summary>
+            <div class="px-6 pb-4 text-charcoal-700">
+              {faq.answer}
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <!-- Still have questions? -->
+      <div class="mt-12 text-center bg-moss-50 border-2 border-moss-200 rounded-xl p-8">
+        <h3 class="text-xl font-semibold text-wood-900 mb-3">Máte další otázky?</h3>
+        <p class="text-charcoal-600 mb-6">Neváhejte nás kontaktovat, rádi vám pomůžeme!</p>
+        <a href="#kontakt" class="btn-primary">
+          Kontaktovat nás
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

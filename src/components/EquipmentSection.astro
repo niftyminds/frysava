@@ -1,0 +1,183 @@
+---
+// File: /Users/michalpresse/Downloads/github-repo/Repositories/frysava/src/components/EquipmentSection.astro
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
+
+const featuresDataPath = path.join(process.cwd(), 'src/data/features.yaml');
+const featuresData = yaml.load(fs.readFileSync(featuresDataPath, 'utf8'));
+const siteDataPath = path.join(process.cwd(), 'src/data/site.yaml');
+const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
+
+// Icon SVG paths
+const iconMap = {
+  'droplet': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21.5c4.5 0 7-3.5 7-7.5 0-4-3.5-8.5-7-13-3.5 4.5-7 9-7 13 0 4 2.5 7.5 7 7.5z"/>',
+  'utensils': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2M7 2v20M21 15V2v0a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>',
+  'home': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>',
+  'wifi': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>',
+  'beer': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 11h1a3 3 0 010 6h-1m-7-6v6m3-6v6M6 5v16a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2z"/>',
+  'tree': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 22v-5m0 0l-3-3m3 3l3-3m-3-12l-6 7h4l-2 5h8l-2-5h4l-6-7z"/>',
+  'baby': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>',
+  'check': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>',
+  'chevron-down': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>',
+  'flame': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/>',
+  'sauna': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.5 21h17M5.5 21V11.5a1 1 0 011-1h11a1 1 0 011 1V21M8 14.5v3M12 13v5M16 14.5v3"/>',
+};
+
+// Key highlights that differentiate this property (not shown in USP badges)
+const keyHighlights = [
+  { icon: 'sauna', label: 'Sauna pro 5 osob', accent: true },
+  { icon: 'beer', label: 'Pivo na čepu', accent: true },
+  { icon: 'droplet', label: '3 koupelny', accent: false },
+  { icon: 'flame', label: 'Krb', accent: false },
+];
+
+// Category icon mapping
+const categoryIcons = {
+  'Kuchyně': 'utensils',
+  'Společné prostory': 'home',
+  'Internet a technologie': 'wifi',
+  'Zábava a stravování': 'beer',
+  'Venkovní vybavení': 'tree',
+  'Pro děti': 'baby',
+};
+
+// Consolidated categories (merging small ones, removing duplicates from USP)
+const consolidatedCategories = [
+  {
+    name: 'Kuchyně',
+    icon: 'utensils',
+    items: featuresData.categories.find(c => c.name === 'Kuchyně')?.items || [],
+  },
+  {
+    name: 'Společné prostory',
+    icon: 'home',
+    items: featuresData.categories.find(c => c.name === 'Společné prostory')?.items || [],
+  },
+  {
+    name: 'Venkovní vybavení',
+    icon: 'tree',
+    items: featuresData.categories.find(c => c.name === 'Venkovní vybavení')?.items || [],
+  },
+  {
+    name: 'Internet a zábava',
+    icon: 'wifi',
+    items: [
+      ...(featuresData.categories.find(c => c.name === 'Internet a technologie')?.items || []),
+      ...(featuresData.categories.find(c => c.name === 'Zábava a stravování')?.items || []),
+    ],
+  },
+  {
+    name: 'Pro děti',
+    icon: 'baby',
+    items: featuresData.categories.find(c => c.name === 'Pro děti')?.items || [],
+  },
+];
+
+// Services and pet policy as footer note
+const petPolicy = featuresData.categories.find(c => c.name === 'Mazlíčci')?.items[0];
+---
+
+<section id="vybaveni" class="py-12 md:py-16 bg-sand-50">
+  <div class="container max-w-5xl">
+
+    <!-- Compact Section Header -->
+    <div class="text-center mb-8">
+      <h2 class="text-2xl md:text-3xl font-serif text-wood-900 mb-2">Vybavení chalupy</h2>
+      <p class="text-charcoal-600">Vše pro pohodlný pobyt až {siteData.capacity.max_guests} hostů</p>
+    </div>
+
+    <!-- Key Highlights Strip (replaces featured cards + stats bar) -->
+    <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 p-4 bg-white rounded-xl border border-sand-200">
+      {keyHighlights.map((highlight) => (
+        <div class={`flex items-center gap-2 px-3 py-2 rounded-lg ${highlight.accent ? 'bg-moss-50 text-moss-700' : 'text-charcoal-700'}`}>
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <Fragment set:html={iconMap[highlight.icon]} />
+          </svg>
+          <span class={`text-sm font-medium ${highlight.accent ? '' : ''}`}>{highlight.label}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Compact Category Grid with Accordion -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {consolidatedCategories.map((category, index) => (
+        <details class="equipment-category group bg-white rounded-xl border border-sand-200 overflow-hidden" open={index === 0}>
+          <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-sand-50 transition-colors list-none">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 flex items-center justify-center rounded-lg bg-moss-50 text-moss-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Fragment set:html={iconMap[category.icon] || iconMap['home']} />
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-semibold text-wood-900 text-sm">{category.name}</h3>
+                <span class="text-xs text-charcoal-500">{category.items.length} položek</span>
+              </div>
+            </div>
+            <svg class="w-5 h-5 text-charcoal-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <Fragment set:html={iconMap['chevron-down']} />
+            </svg>
+          </summary>
+
+          <div class="px-4 pb-4 pt-2 border-t border-sand-100">
+            <ul class="space-y-1.5">
+              {category.items.map((item) => (
+                <li class="flex items-start gap-2 text-sm">
+                  <span class={`mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.highlight ? 'bg-moss-500' : 'bg-charcoal-300'}`}></span>
+                  <span class={item.highlight ? 'text-moss-700 font-medium' : 'text-charcoal-600'}>
+                    {item.name}
+                    {item.note && <span class="text-charcoal-400 text-xs ml-1">({item.note})</span>}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <!-- Compact Footer: Services + Pet Policy -->
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-charcoal-600">
+      {featuresData.services && featuresData.services.length > 0 && (
+        <div class="flex items-center gap-2">
+          <span class="text-charcoal-400">Služby na požádání:</span>
+          <span>{featuresData.services.map(s => s.name.split(' ').slice(0, 2).join(' ')).join(' | ')}</span>
+        </div>
+      )}
+      {petPolicy && (
+        <div class="flex items-center gap-2 px-3 py-1 bg-sand-100 rounded-full">
+          <span>Mazlíčci vítáni</span>
+          <span class="text-charcoal-400 text-xs">{petPolicy.note}</span>
+        </div>
+      )}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* Remove default details marker */
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Smooth accordion animation */
+  details[open] summary {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  /* Subtle hover state */
+  .equipment-category:hover {
+    border-color: #c8d9c5;
+  }
+
+  /* Reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .equipment-category,
+    details summary svg {
+      transition: none;
+    }
+  }
+</style>

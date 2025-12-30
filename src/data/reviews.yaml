@@ -1,0 +1,20 @@
+# Recenze návštěvníků
+
+reviews:
+  - author: "Hanka"
+    text: "Chaloupku jsme si vybraly pro společné setkání spolužaček z průmyslovky po 46 letech. Vnitřek chalupy nás naprosto okouzlil nejen vkusem a nápaditostí v zařízení, ale hlavně až neskutečnou čistotou v každém koutku. Rozhodně doporučíme kamarádům a známým."
+    date: "Podzim 2023"
+    rating: 5
+    group: "Plachá Olga se skupinou přátel"
+
+  - author: "Ivana"
+    text: "Nebyli jsme u vás na dovolené v roce 2019, ale 1991... To ještě byla chaloupka ve velmi původním stavu, ale nádherná, čistounká, prostředí balzám na nervy. I po tolika letech na dovolenou u vás s láskou a radostí vzpomínám. Přeji vám ať se vám dobře daří."
+    date: "Léto"
+    rating: 5
+    group: "Ivana s rodinou"
+
+  - author: "Mirka"
+    text: "Romantická chalupa v krásném prostředí, s velkou možností výletů i pro malé děti. Vstřícné jednání majitele, krásná atmosféra staré chalupy s moderním vybavením. Děti si mohly prohlédnout staré váhy, žehličky, fotografie. Určitě doporučujeme!"
+    date: "Léto 2024"
+    rating: 5
+    group: "Rodina s dětmi"

@@ -1,0 +1,30 @@
+# Kalendář obsazenosti chalupy
+
+# Google Calendar embed (TODO: doplnit skutečný link pokud existuje)
+google_calendar_embed: ""
+# Příklad: "https://calendar.google.com/calendar/embed?src=..."
+
+# Manuální seznam obsazených termínů (fallback)
+# Formát data: YYYY-MM-DD
+occupied_dates:
+  - from: "2025-12-28"
+    to: "2026-01-04"
+    status: "obsazeno"
+    note: "Silvestr - potvrzená rezervace"
+
+  # Příklad dalších termínů:
+  # - from: "2026-02-14"
+  #   to: "2026-02-16"
+  #   status: "rezervace"
+  #   note: "Předběžná rezervace"
+
+# Typy statusů: "obsazeno" | "rezervace" | "volno"
+# - obsazeno: Potvrzená rezervace (červená)
+# - rezervace: Předběžná rezervace (oranžová)
+# - volno: Volný termín (zelená)
+
+# Poznámky k kalendáři
+notes:
+  - "Kalendář je orientační, aktuální dostupnost si ověřte u majitele"
+  - "Minimální délka pobytu: 2 noci (mimo Silvester)"
+  - "Silvestr: Týdenní pobyt"

@@ -1,0 +1,61 @@
+# Základní informace o webu a chalupě
+name: "Chalupa na Fryšavě"
+slogan: "Historická chalupa s moderním komfortem pod Žákovou horou"
+description: "Prostorná chalupa pro až 20 osob s saunou, výčepem Dalešice a výhledem na nasvícený kostel. Ideální pro rodinné dovolené, přátelská setkání i firemní akce."
+
+# Lokalita
+location:
+  address: "Fryšava pod Žákovou horou čp.88"
+  region: "Vysočina"
+  country: "Česká republika"
+  gps:
+    lat: 49.62738
+    lng: 16.03688
+
+# Kapacita
+capacity:
+  max_guests: 20
+  bedrooms: 6
+  total_rooms: 7  # 6 pokojů + galerie
+
+# Kontaktní informace (TODO: doplnit skutečné údaje)
+contact:
+  email: "info@chalupa-frysava.cz"  # Placeholder
+  phone: "+420 XXX XXX XXX"  # Placeholder
+  whatsapp: ""  # Volitelné
+
+# SEO meta
+meta:
+  title: "Chalupa na Fryšavě - Pronájem chalupy až pro 20 osob | Vysočina"
+  description: "Pronájem prostorné chalupy na Vysočině. Až 20 lůžek, sauna, výčep, Wi-Fi. Ideální pro rodiny, přátele i firemní akce. Krásná příroda, sjezdovky, běžky."
+  keywords:
+    - "chalupa Fryšava"
+    - "pronájem chalupy Vysočina"
+    - "chalupa pro 20 osob"
+    - "chalupa se saunou"
+    - "chalupa Žákova hora"
+    - "dovolená Vysočina"
+
+# Sociální sítě (TODO: doplnit pokud existují)
+social:
+  facebook: ""
+  instagram: ""
+
+# Hodnocení
+rating:
+  score: 4.7
+  max: 5
+  reviews_count: 3
+  overall_score: 93
+  max_overall: 100
+
+# Speciální vlastnosti (pro rychlé zobrazení)
+highlights:
+  - "Kapacita až 20 osob"
+  - "6 ložnic + galerie"
+  - "Sauna pro 5 osob"
+  - "Výčep Dalešice 11° a 12°"
+  - "Oplocený pozemek"
+  - "VDSL internet"
+  - "Vhodné pro děti"
+  - "Mazlíčci vítáni"

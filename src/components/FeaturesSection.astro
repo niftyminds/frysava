@@ -1,0 +1,87 @@
+---
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
+
+const featuresDataPath = path.join(process.cwd(), 'src/data/features.yaml');
+const featuresData = yaml.load(fs.readFileSync(featuresDataPath, 'utf8'));
+
+// Icon map for SVG paths
+const iconMap = {
+  'droplet': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>',
+  'chef-hat': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>',
+  'home': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>',
+  'wifi': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>',
+  'beer': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>',
+  'tree-pine': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l7 18M5 3l7-3m-7 3h14m0 0l-7 18m7-18l-7-3m0 21V3"></path>',
+  'baby': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>',
+  'dog': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>',
+  'check': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>',
+  'chevron': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>',
+};
+---
+
+<section id="vybaveni" class="section bg-sand-50">
+  <div class="container">
+    <h2 class="text-center mb-4">Vybavení</h2>
+    <p class="text-center text-charcoal-600 mb-12 max-w-2xl mx-auto">
+      Kompletně vybavená chalupa s veškerým komfortem pro váš pohodlný pobyt
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {featuresData.categories.map((category) => (
+        <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border border-sand-200">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 text-moss-600">
+              <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <Fragment set:html={iconMap[category.icon] || iconMap['home']} />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-wood-900">{category.name}</h3>
+          </div>
+
+          <ul class="space-y-2">
+            {category.items.map((item) => (
+              <li class="flex items-start gap-2">
+                <div class="w-5 h-5 text-moss-600 mt-0.5 flex-shrink-0">
+                  <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <Fragment set:html={iconMap['check']} />
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <span class={item.highlight ? 'font-semibold text-moss-700' : 'text-charcoal-700'}>
+                    {item.name}
+                  </span>
+                  {item.note && (
+                    <span class="text-sm text-charcoal-500 block">{item.note}</span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <!-- Services -->
+    {featuresData.services && featuresData.services.length > 0 && (
+      <div class="mt-12 bg-moss-50 border-2 border-moss-200 rounded-xl p-8">
+        <h3 class="text-2xl font-semibold text-wood-900 mb-6 text-center">
+          Dodatečné služby
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {featuresData.services.map((service) => (
+            <div class="flex items-center gap-2 text-charcoal-700">
+              <div class="w-4 h-4 text-moss-600 flex-shrink-0">
+                <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Fragment set:html={iconMap['chevron']} />
+                </svg>
+              </div>
+              <span>{service.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+</section>

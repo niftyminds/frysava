@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Rezervace - Chalupa na Fryšavě">
+  <Header />
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="section bg-gradient-to-br from-sand-50 to-moss-50">
+      <div class="container text-center">
+        <h1 class="mb-6">Rezervace</h1>
+        <p class="text-lg text-charcoal-700 mb-8 max-w-2xl mx-auto">
+          Vyberte si termín a rezervujte si pobyt v naší chalupě
+        </p>
+      </div>
+    </section>
+
+    <!-- Previo Booking Widget -->
+    <section class="section bg-white">
+      <div class="container">
+        <div class="max-w-5xl mx-auto">
+          <!-- Previo iframe placeholder -->
+          <div class="bg-sand-50 border-2 border-sand-300 rounded-xl p-12 text-center min-h-[600px] flex flex-col items-center justify-center">
+            <svg class="w-16 h-16 text-moss-600 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            <h3 class="text-2xl font-semibold text-wood-900 mb-4">Online rezervační systém</h3>
+            <p class="text-charcoal-700 mb-6 max-w-md">
+              Zde bude umístěn rezervační widget ze systému Previo.<br/>
+              Vložte váš Previo embed kód níže.
+            </p>
+
+            <!-- Placeholder for Previo embed code -->
+            <div class="bg-white border-2 border-dashed border-moss-300 rounded-lg p-6 max-w-md w-full">
+              <p class="text-sm text-charcoal-600 font-mono">
+                &lt;!-- Vložte zde Previo iframe --&gt;<br/>
+                &lt;iframe src="https://..."&gt;&lt;/iframe&gt;
+              </p>
+            </div>
+
+            <div class="mt-8">
+              <p class="text-sm text-charcoal-600 mb-4">Zatím nemáte Previo účet?</p>
+              <a
+                href="https://www.previo.cz/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 text-moss-600 hover:text-moss-700 font-medium"
+              >
+                Zjistit více o Previo
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Alternative contact info -->
+          <div class="mt-12 bg-moss-50 border-2 border-moss-200 rounded-xl p-8">
+            <h3 class="text-xl font-semibold text-wood-900 mb-4 text-center">
+              Potřebujete pomoc s rezervací?
+            </h3>
+            <p class="text-center text-charcoal-700 mb-6">
+              Rádi vám poradíme a pomůžeme s výběrem termínu
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/#kontakt" class="btn-primary">
+                Kontaktní formulář
+              </a>
+              <a href="tel:+420123456789" class="btn-secondary">
+                Zavolat nám
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="section bg-sand-50">
+      <div class="container">
+        <div class="max-w-3xl mx-auto">
+          <h2 class="text-center mb-12">Informace o rezervaci</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-sand-200">
+              <div class="flex items-start gap-3 mb-3">
+                <svg class="w-6 h-6 text-moss-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                </svg>
+                <div>
+                  <h3 class="font-semibold text-wood-900 mb-1">Check-in</h3>
+                  <p class="text-sm text-charcoal-700">Od 15:00 hodin</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-sand-200">
+              <div class="flex items-start gap-3 mb-3">
+                <svg class="w-6 h-6 text-moss-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                </svg>
+                <div>
+                  <h3 class="font-semibold text-wood-900 mb-1">Check-out</h3>
+                  <p class="text-sm text-charcoal-700">Do 10:00 hodin</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-sand-200">
+              <div class="flex items-start gap-3 mb-3">
+                <svg class="w-6 h-6 text-moss-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                <div>
+                  <h3 class="font-semibold text-wood-900 mb-1">Záloha</h3>
+                  <p class="text-sm text-charcoal-700">30% z celkové ceny</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-sand-200">
+              <div class="flex items-start gap-3 mb-3">
+                <svg class="w-6 h-6 text-moss-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                  <h3 class="font-semibold text-wood-900 mb-1">Potvrzení</h3>
+                  <p class="text-sm text-charcoal-700">Do 24 hodin e-mailem</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 text-center">
+            <a href="/cenik" class="text-moss-600 hover:text-moss-700 font-medium">
+              Zobrazit celý ceník →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,89 @@
+# O chalupě - popis, historie, lokalita
+
+# Hlavní popis
+description: |
+  Historická chalupa s tradicí - údajně zde byly vyrobeny první lyže pod Žákovou horou.
+  Objekt kombinuje autentickou chalupskou atmosféru s moderním komfortem.
+
+# Historie
+history:
+  title: "Historie a tradice"
+  content: |
+    Chalupa má historickou hodnotu - traduje se, že právě zde byly vyrobeny první lyže
+    pod Žákovou horou. Objekt zachovává autentickou atmosféru, ale zároveň nabízí
+    moderní vybavení pro pohodlný pobyt velkých skupin.
+
+# Hlavní přednosti
+highlights:
+  - title: "Prostorné podkroví"
+    description: "Hlavní obytný prostor (~90 m²) s ložním polem a galerií speciálně pro děti"
+    icon: "home"
+
+  - title: "Ideální umístění"
+    description: "V centru obce, 200 m do obchodu, 400 m do hospody"
+    icon: "map-pin"
+
+  - title: "Romantická atmosféra"
+    description: "Z okna večerní výhled na nasvícený kostel, ranní probouzení zpěvem ptáků"
+    icon: "sunrise"
+
+  - title: "Pro koho je chalupa ideální"
+    description: "Rodiny s dětmi, přátelská setkání, firemní teambuilding, semináře"
+    icon: "users"
+
+# Lokalita a okolí
+location:
+  title: "Okolí a aktivity"
+  description: "Fryšava pod Žákovou horou nabízí krásnou přírodu, sportovní vyžití i rodinné aktivity"
+
+  # Vzdálenosti
+  distances:
+    - place: "Rybník Brádelák"
+      distance: "Za domem"
+      icon: "fish"
+
+    - place: "Obchod"
+      distance: "200 m"
+      icon: "shopping-cart"
+
+    - place: "Hospody/restaurace"
+      distance: "400 m"
+      icon: "utensils"
+
+    - place: "Rybníky Sykovec, Medlov"
+      distance: "1,5 km"
+      icon: "waves"
+
+    - place: "Harusův kopec (sjezdovka)"
+      distance: "5-7 km"
+      icon: "mountain-snow"
+
+    - place: "Vysočina Aréna (biketraily)"
+      distance: "7 km"
+      icon: "bike"
+
+  # Sportovní aktivity
+  activities:
+    summer:
+      - "Cyklotrasy a biketraily"
+      - "Turistika"
+      - "Rybářství"
+      - "Koupání v rybnících"
+
+    winter:
+      - "Běžecké stopy v bezprostřední blízkosti"
+      - "Sjezdové lyžování na Harusově kopci"
+      - "Zimní turistika"
+
+# Citáty / testimonials
+quotes:
+  - text: "Umístění chalupy nemůže být lepší. Z okna večer vidíte nasvícený kostel, ráno vás budí ptáci, do obchodu je to pět minut pěšky."
+    author: "Popis z webu"
+
+# Speciální nabídky
+special_offers:
+  - "Firemní setkání a semináře"
+  - "Teambuildingové akce"
+  - "Školení a workshopy"
+  - "Rodinné oslavy"
+  - "Možnost individuální cenové nabídky"

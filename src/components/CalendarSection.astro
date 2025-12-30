@@ -1,0 +1,152 @@
+---
+// Získání aktuálního měsíce a roku
+const now = new Date();
+const currentMonth = now.getMonth();
+const currentYear = now.getFullYear();
+
+// Názvy měsíců v češtině
+const monthNames = [
+  'Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen',
+  'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'
+];
+
+// Názvy dnů v týdnu
+const dayNames = ['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'];
+
+// Výpočet dnů v měsíci
+const getDaysInMonth = (year: number, month: number) => {
+  return new Date(year, month + 1, 0).getDate();
+};
+
+// Výpočet prvního dne měsíce (0 = neděle, 1 = pondělí, ...)
+const getFirstDayOfMonth = (year: number, month: number) => {
+  const day = new Date(year, month, 1).getDay();
+  return day === 0 ? 6 : day - 1; // Konverze na pondělí = 0
+};
+
+const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
+
+// Vytvoření pole dnů
+const days: (number | null)[] = [];
+
+// Prázdná místa před prvním dnem
+for (let i = 0; i < firstDay; i++) {
+  days.push(null);
+}
+
+// Dny měsíce
+for (let i = 1; i <= daysInMonth; i++) {
+  days.push(i);
+}
+
+// Doplnění do plného gridu (max 42 pozic = 6 řádků)
+while (days.length < 42) {
+  days.push(null);
+}
+---
+
+<section id="kalendar" class="section bg-sand-50">
+  <div class="container">
+    <h2 class="text-center mb-4">Kalendář obsazenosti</h2>
+    <p class="text-center text-charcoal-600 mb-12 max-w-2xl mx-auto">
+      Aktuální stav obsazenosti chalupy
+    </p>
+
+    <div class="max-w-3xl mx-auto">
+      <!-- Měsíční kalendář -->
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-sand-200">
+        <!-- Header s názvem měsíce -->
+        <div class="bg-moss-600 text-white px-6 py-4 flex items-center justify-between">
+          <button class="p-2 hover:bg-moss-700 rounded-lg transition-colors opacity-50 cursor-not-allowed" disabled>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <h3 class="text-xl font-semibold">
+            {monthNames[currentMonth]} {currentYear}
+          </h3>
+          <button class="p-2 hover:bg-moss-700 rounded-lg transition-colors opacity-50 cursor-not-allowed" disabled>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Dny v týdnu -->
+        <div class="grid grid-cols-7 bg-sand-100 border-b border-sand-200">
+          {dayNames.map((day, index) => (
+            <div class={`py-3 text-center text-sm font-semibold ${index >= 5 ? 'text-wood-600' : 'text-charcoal-700'}`}>
+              {day}
+            </div>
+          ))}
+        </div>
+
+        <!-- Kalendární grid -->
+        <div class="grid grid-cols-7">
+          {days.map((day, index) => {
+            const isWeekend = index % 7 >= 5;
+            const isToday = day === now.getDate();
+
+            return (
+              <div
+                class={`
+                  aspect-square flex items-center justify-center border-b border-r border-sand-100
+                  ${day === null ? 'bg-sand-50/50' : 'bg-white hover:bg-sand-50 cursor-pointer'}
+                  ${isWeekend && day !== null ? 'bg-sand-50' : ''}
+                  ${isToday ? 'ring-2 ring-inset ring-moss-500' : ''}
+                  transition-colors
+                `}
+              >
+                {day !== null && (
+                  <span class={`
+                    text-sm font-medium
+                    ${isToday ? 'text-moss-700 font-bold' : ''}
+                    ${isWeekend && !isToday ? 'text-wood-600' : 'text-charcoal-700'}
+                  `}>
+                    {day}
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <!-- Placeholder text -->
+        <div class="p-6 bg-moss-50 border-t border-moss-200">
+          <div class="flex items-center justify-center gap-3 text-moss-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p class="text-sm font-medium">
+              Zde bude umístěn rezervační kalendář ze systému Previo
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legenda -->
+      <div class="mt-6 flex flex-wrap gap-6 justify-center text-sm">
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 rounded bg-white border border-sand-200"></div>
+          <span class="text-charcoal-600">Volno</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 rounded bg-sand-50 border border-sand-200"></div>
+          <span class="text-charcoal-600">Víkend</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 rounded bg-white ring-2 ring-moss-500"></div>
+          <span class="text-charcoal-600">Dnes</span>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center mt-8">
+        <a href="/rezervace" class="btn-primary">
+          Rezervovat termín
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

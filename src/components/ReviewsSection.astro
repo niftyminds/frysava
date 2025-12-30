@@ -1,0 +1,170 @@
+---
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
+
+const reviewsDataPath = path.join(process.cwd(), 'src/data/reviews.yaml');
+const reviewsData = yaml.load(fs.readFileSync(reviewsDataPath, 'utf8'));
+---
+
+<section id="recenze" class="section bg-white">
+  <div class="container">
+    <h2 class="text-center mb-16">Co říkají naši hosté</h2>
+
+    <!-- Reviews Carousel -->
+    <div
+      class="reviews-carousel relative max-w-5xl mx-auto"
+      data-reviews-carousel
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Recenze hostů"
+    >
+      <div class="embla overflow-hidden">
+        <div class="embla__container">
+          {reviewsData.reviews.map((review, index) => (
+            <article
+              class="embla__slide flex flex-col items-center text-center px-6"
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`Recenze ${index + 1} z ${reviewsData.reviews.length}`}
+            >
+              <!-- Stars -->
+              <div
+                class="flex justify-center gap-2 mb-8"
+                role="img"
+                aria-label={`Hodnocení ${review.rating} z 5`}
+              >
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <svg
+                    class={`w-6 h-6 ${i < review.rating ? 'text-amber-400' : 'text-charcoal-200'}`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    aria-hidden="true"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+
+              <!-- Quote -->
+              <blockquote class="text-2xl md:text-3xl leading-loose md:leading-loose font-serif italic text-charcoal-700 max-w-4xl mb-10">
+                "{review.text}"
+              </blockquote>
+
+              <!-- Author -->
+              <cite class="not-italic font-semibold text-lg text-wood-900">
+                {review.author}
+              </cite>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Navigation Dots -->
+      <div class="flex justify-center gap-3 mt-8" id="review-dots">
+        {reviewsData.reviews.map((_, index) => (
+          <button
+            class="review-dot w-2.5 h-2.5 rounded-full bg-charcoal-200 hover:bg-charcoal-400 transition-all duration-300"
+            data-index={index}
+            aria-label={`Přejít na recenzi ${index + 1}`}
+          ></button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-12">
+      <a href="#kontakt" class="btn-primary inline-block">
+        Vytvořte si vlastní vzpomínku
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reviews-carousel .embla__container {
+    display: flex;
+  }
+
+  .reviews-carousel .embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    opacity: 0;
+    transition: opacity 800ms ease-in-out;
+  }
+
+  .reviews-carousel .embla__slide.is-active {
+    opacity: 1;
+  }
+
+  .review-dot.is-active {
+    @apply bg-moss-500 w-6;
+  }
+
+  /* Pause animation for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .reviews-carousel .embla__slide {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import EmblaCarousel from 'embla-carousel';
+  import Autoplay from 'embla-carousel-autoplay';
+
+  function initReviewsCarousel() {
+    const emblaNode = document.querySelector('[data-reviews-carousel] .embla');
+    const dotsContainer = document.getElementById('review-dots');
+
+    if (!emblaNode) return;
+
+    const autoplay = Autoplay({
+      delay: 5000,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+    });
+
+    const embla = EmblaCarousel(emblaNode as HTMLElement, {
+      loop: true,
+      duration: 40,
+    }, [autoplay]);
+
+    const slides = emblaNode.querySelectorAll('.embla__slide');
+    const dots = dotsContainer?.querySelectorAll('.review-dot');
+
+    const updateActiveSlide = () => {
+      const selectedIndex = embla.selectedScrollSnap();
+
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('is-active', index === selectedIndex);
+      });
+
+      dots?.forEach((dot, index) => {
+        dot.classList.toggle('is-active', index === selectedIndex);
+      });
+    };
+
+    dots?.forEach((dot, index) => {
+      dot.addEventListener('click', () => embla.scrollTo(index));
+    });
+
+    embla.on('select', updateActiveSlide);
+    embla.on('init', updateActiveSlide);
+    updateActiveSlide();
+
+    // Respect reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      autoplay.stop();
+    }
+
+    console.log('Reviews carousel initialized');
+  }
+
+  // Run initialization when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initReviewsCarousel);
+  } else {
+    initReviewsCarousel();
+  }
+</script>
