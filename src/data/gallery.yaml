@@ -1,5 +1,6 @@
-# Kategorizace fotografií pro galerii
+# Galerie fotografií chalupy
 
+# Kategorie fotografií
 categories:
   - id: "exterior"
     name: "Exteriér"
@@ -22,58 +23,192 @@ categories:
     order: 4
 
   - id: "bathroom"
-    name: "Koupelny"
-    description: "Koupelny a sociální zařízení"
+    name: "Koupelny a sauna"
+    description: "Koupelny, sociální zařízení a sauna"
     order: 5
-
-  - id: "sauna"
-    name: "Sauna"
-    description: "Sauna pro 5 osob"
-    order: 6
 
   - id: "pub"
     name: "Výčep"
     description: "Profesionální výčepní zařízení"
-    order: 7
+    order: 6
 
   - id: "floorplans"
     name: "Půdorysy"
     description: "Rozložení chalupy"
+    order: 7
+
+# Mapování fotografií na kategorie
+images:
+  # Exteriér
+  - filename: "exterier-chalupy-c9c9-570474.webp"
+    category: "exterior"
+    alt: "Pohled na chalupu na Fryšavě"
+    featured: true
+    order: 1
+
+  - filename: "exteriery-chalupy-023d-570496.webp"
+    category: "exterior"
+    alt: "Exteriér chalupy"
+    order: 2
+
+  - filename: "chalupa-frysava-pod-zakovou-horou-590d-570473.webp"
+    category: "exterior"
+    alt: "Chalupa Fryšava pod Žákovou horou"
+    order: 3
+
+  - filename: "chalupa-frysava-pod-zakovou-horou-8dac-570472.webp"
+    category: "exterior"
+    alt: "Chalupa Fryšava pod Žákovou horou - pohled z boku"
+    order: 4
+
+  - filename: "frysava-pod-zakovou-horou-a848-570475.webp"
+    category: "exterior"
+    alt: "Fryšava pod Žákovou horou"
+    order: 5
+
+  # Zimní scenérie
+  - filename: "zima-na-vysocine-044d-570471.webp"
+    category: "winter"
+    alt: "Zima na Vysočině"
+    featured: true
+    order: 1
+
+  - filename: "zima-na-vysocine-9ca3-570470.webp"
+    category: "winter"
+    alt: "Zimní Vysočina"
+    order: 2
+
+  # Pokoje
+  - filename: "pokoj-i-pro-dve-osoby-1e8f-570480.webp"
+    category: "rooms"
+    alt: "Pokoj I pro dvě osoby"
+    order: 1
+
+  - filename: "pokoj-i-pro-dve-osoby-e458-570481.webp"
+    category: "rooms"
+    alt: "Pokoj I pro dvě osoby - detail"
+    order: 2
+
+  - filename: "pokoj-ii-pro-tri-osoby-7f54-570482.webp"
+    category: "rooms"
+    alt: "Pokoj II pro tři osoby"
+    order: 3
+
+  - filename: "pokoj-ii-pro-tri-osoby-d49d-570483.webp"
+    category: "rooms"
+    alt: "Pokoj II pro tři osoby - detail"
+    order: 4
+
+  - filename: "pokoj-iii-pro-dve-osoby-22c5-570478.webp"
+    category: "rooms"
+    alt: "Pokoj III pro dvě osoby"
+    order: 5
+
+  - filename: "pokoj-iii-pro-dve-osoby-ca8b-570484.webp"
+    category: "rooms"
+    alt: "Pokoj III pro dvě osoby - detail"
+    order: 6
+
+  - filename: "pokoj-iv-pro-dve-osoby-1860-570476.webp"
+    category: "rooms"
+    alt: "Pokoj IV pro dvě osoby"
+    order: 7
+
+  - filename: "pokoj-iv-pro-dve-osoby-c100-570477.webp"
+    category: "rooms"
+    alt: "Pokoj IV pro dvě osoby - detail"
     order: 8
 
-  - id: "surroundings"
-    name: "Okolí"
-    description: "Fryšava a okolí"
+  - filename: "pokoj-v-pro-8-osob-nocleharna-4586-570479.webp"
+    category: "rooms"
+    alt: "Pokoj V pro 8 osob - noclehárna"
+    featured: true
     order: 9
 
-# Mapování fotografií na kategorie (bude aktualizováno po zpracování fotek)
-images:
-  # Exteriér (4 fotografie)
-  - filename: "exterier-1.jpg"
-    category: "exterior"
-    alt: "Pohled na chalupu z hlavní cesty"
+  - filename: "pokoj-v-pro-8-osob-8993-570485.webp"
+    category: "rooms"
+    alt: "Pokoj V pro 8 osob"
+    order: 10
+
+  - filename: "pokoj-v-pro-8-osob-e5fe-570486.webp"
+    category: "rooms"
+    alt: "Pokoj V pro 8 osob - detail"
+    order: 11
+
+  - filename: "pokoj-vi-pro-4-osoby-galerie-cf1c-570487.webp"
+    category: "rooms"
+    alt: "Pokoj VI - galerie pro 4 osoby"
     featured: true
+    order: 12
 
-  - filename: "exterier-2.jpg"
-    category: "exterior"
-    alt: "Chalupa z boku"
+  # Kuchyně
+  - filename: "kuchyne-25dd-570488.webp"
+    category: "kitchen"
+    alt: "Plně vybavená kuchyně"
+    featured: true
+    order: 1
 
-  - filename: "exterier-3.jpg"
-    category: "exterior"
-    alt: "Vstup do chalupy"
+  - filename: "kuchyne-606b-570489.webp"
+    category: "kitchen"
+    alt: "Kuchyně - detail"
+    order: 2
 
-  - filename: "exterier-4.jpg"
-    category: "exterior"
-    alt: "Zadní část chalupy s ohništěm"
+  - filename: "kuchyne-bcd0-570493.webp"
+    category: "kitchen"
+    alt: "Kuchyňské vybavení"
+    order: 3
 
-  # Zimní scenérie (2 fotografie)
-  - filename: "zima-1.jpg"
-    category: "winter"
-    alt: "Chalupa v zimě"
+  # Koupelny a sauna
+  - filename: "sauna-a-koupelna-ii--654b-852425.webp"
+    category: "bathroom"
+    alt: "Sauna a koupelna II"
+    featured: true
+    order: 1
 
-  - filename: "zima-2.jpg"
-    category: "winter"
-    alt: "Zasněžená chalupa"
+  - filename: "sauna-1b34-852426.webp"
+    category: "bathroom"
+    alt: "Sauna pro 5 osob"
+    order: 2
 
-  # TODO: Doplnit další fotky po jejich zpracování
-  # Celkem: 32 fotografií
+  - filename: "sauna-30d6-852427.webp"
+    category: "bathroom"
+    alt: "Sauna - detail"
+    order: 3
+
+  - filename: "sauna-ca3c-852428.webp"
+    category: "bathroom"
+    alt: "Vybavení sauny"
+    order: 4
+
+  - filename: "koupelna-i--1919-570494.webp"
+    category: "bathroom"
+    alt: "Koupelna I"
+    order: 5
+
+  - filename: "vybaveni-koupelny-1276-570495.webp"
+    category: "bathroom"
+    alt: "Vybavení koupelny"
+    order: 6
+
+  # Výčep
+  - filename: "vycepni-zarizeni-s-chlazenim-0a60-570492.webp"
+    category: "pub"
+    alt: "Výčepní zařízení s chlazením"
+    featured: true
+    order: 1
+
+  - filename: "na-cepu-pivo-dalecice-d47c-570491.webp"
+    category: "pub"
+    alt: "Na čepu pivo Dalešice"
+    order: 2
+
+  # Půdorysy
+  - filename: "pudorys-prizemi-d60b-570497.webp"
+    category: "floorplans"
+    alt: "Půdorys přízemí"
+    order: 1
+
+  - filename: "pudorys-prvniho-patra-a-galerie-4dea-570498.webp"
+    category: "floorplans"
+    alt: "Půdorys prvního patra a galerie"
+    order: 2

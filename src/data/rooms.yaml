@@ -1,53 +1,101 @@
-# Rozložení pokojů v chalupě
-
+hero:
+  title: Pokoje a ubytování
+  subtitle: 6 prostorných pokojů & galerie pro 20 hostů
+  image: /images/large/exterier-chalupy-c9c9-570474.webp
+  image_alt: Pokoje v chalupě na Fryšavě
 rooms:
   - id: 1
-    name: "Pokoj I"
+    name: Pokoj I
     capacity: 2
-    type: "Dvoulůžkový pokoj"
-    floor: "přízemí"
+    type: Dvoulůžkový pokoj
+    floor: přízemí
     description: ""
-
+    images:
+      - /images/large/pokoj-i-pro-dve-osoby-1e8f-570480.webp
+      - /images/large/pokoj-i-pro-dve-osoby-e458-570481.webp
   - id: 2
-    name: "Pokoj II"
+    name: Pokoj II
     capacity: 3
-    type: "Třílůžkový pokoj"
-    floor: "přízemí"
+    type: Třílůžkový pokoj
+    floor: přízemí
     description: ""
-
+    images:
+      - /images/large/pokoj-ii-pro-tri-osoby-7f54-570482.webp
+      - /images/large/pokoj-ii-pro-tri-osoby-d49d-570483.webp
   - id: 3
-    name: "Pokoj III"
+    name: Pokoj III
     capacity: 2
-    type: "Dvoulůžkový pokoj"
-    floor: "patro"
+    type: Dvoulůžkový pokoj
+    floor: přízemí
     description: ""
-
+    images:
+      - /images/large/pokoj-iii-pro-dve-osoby-22c5-570478.webp
+      - /images/large/pokoj-iii-pro-dve-osoby-ca8b-570484.webp
   - id: 4
-    name: "Pokoj IV"
+    name: Pokoj IV
     capacity: 2
-    type: "Dvoulůžkový pokoj"
-    floor: "patro"
+    type: Dvoulůžkový pokoj
+    floor: přízemí
     description: ""
-
+    images:
+      - /images/large/pokoj-iv-pro-dve-osoby-1860-570476.webp
+      - /images/large/pokoj-iv-pro-dve-osoby-c100-570477.webp
   - id: 5
-    name: "Pokoj V - Noclehárna"
+    name: Pokoj V - Noclehárna
     capacity: 8
-    type: "Společná noclehárna"
-    floor: "patro"
-    description: "Ideální pro větší skupiny přátel nebo děti"
+    type: Společná noclehárna
+    floor: patro
+    description: ""
     highlight: true
-
+    images:
+      - /images/large/pokoj-v-pro-8-osob-nocleharna-4586-570479.webp
+      - /images/large/pokoj-v-pro-8-osob-8993-570485.webp
+      - /images/large/pokoj-v-pro-8-osob-e5fe-570486.webp
   - id: 6
-    name: "Galerie (Pokoj VI)"
+    name: Galerie (Pokoj VI)
     capacity: 4
-    type: "Galerie v podkroví"
-    floor: "podkroví"
-    description: "Prostorné podkroví (~90 m²) s ložním polem, speciálně navrženo pro děti"
+    type: Galerie v podkroví
+    floor: podkroví
+    description: ""
     highlight: true
-
-# Souhrn
+    images:
+      - /images/large/pokoj-vi-pro-4-osoby-galerie-cf1c-570487.webp
 summary:
   total_rooms: 6
   plus_gallery: true
   total_capacity: 20
-  note: "Možnost přistýlek pro až 26 osob celkem (za příplatek 500 Kč/osoba/noc)"
+  total_floors: 3
+  extra_beds: 6
+  note_title: Flexibilní kapacita
+  note: Možnost přistýlek pro až 26 osob celkem (za příplatek 500 Kč/osoba/noc)
+stats_labels:
+  rooms: pokojů
+  capacity: osob
+  floors: patra
+  extra_beds: přistýlek
+filter_labels:
+  all: Všechny
+  ground_floor: Přízemí
+  first_floor: Patro
+  attic: Podkroví
+featured_section:
+  badge: ✨ Speciální prostor
+  title: Galerie - Ráj pro děti
+  description: Prostorné podkroví s ložním polem speciálně navrženo pro děti.
+    Bezpečný prostor pro dobrodružné spaní, soukromí od rodičů a zábavu.
+  features:
+    - Hravý prostor pro dětská dobrodružství
+    - Ložní pole až pro 4 děti
+    - Zábradlí pro bezpečnost
+  image: /images/large/pokoj-vi-pro-4-osoby-galerie-cf1c-570487.webp
+  image_alt: Galerie v podkroví - prostor pro děti
+cta:
+  title: Máte zájem o ubytování?
+  description: Kontaktujte nás a domluvíme termín, který vám vyhovuje.
+  buttons:
+    - text: Poptat termín
+      link: /#kontakt
+      style: primary
+    - text: Zobrazit ceník
+      link: /cenik
+      style: secondary

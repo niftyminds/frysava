@@ -24,58 +24,8 @@ const iconMap = {
   'sauna': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.5 21h17M5.5 21V11.5a1 1 0 011-1h11a1 1 0 011 1V21M8 14.5v3M12 13v5M16 14.5v3"/>',
 };
 
-// Key highlights that differentiate this property (not shown in USP badges)
-const keyHighlights = [
-  { icon: 'sauna', label: 'Sauna pro 5 osob', accent: true },
-  { icon: 'beer', label: 'Pivo na čepu', accent: true },
-  { icon: 'droplet', label: '3 koupelny', accent: false },
-  { icon: 'flame', label: 'Krb', accent: false },
-];
-
-// Category icon mapping
-const categoryIcons = {
-  'Kuchyně': 'utensils',
-  'Společné prostory': 'home',
-  'Internet a technologie': 'wifi',
-  'Zábava a stravování': 'beer',
-  'Venkovní vybavení': 'tree',
-  'Pro děti': 'baby',
-};
-
-// Consolidated categories (merging small ones, removing duplicates from USP)
-const consolidatedCategories = [
-  {
-    name: 'Kuchyně',
-    icon: 'utensils',
-    items: featuresData.categories.find(c => c.name === 'Kuchyně')?.items || [],
-  },
-  {
-    name: 'Společné prostory',
-    icon: 'home',
-    items: featuresData.categories.find(c => c.name === 'Společné prostory')?.items || [],
-  },
-  {
-    name: 'Venkovní vybavení',
-    icon: 'tree',
-    items: featuresData.categories.find(c => c.name === 'Venkovní vybavení')?.items || [],
-  },
-  {
-    name: 'Internet a zábava',
-    icon: 'wifi',
-    items: [
-      ...(featuresData.categories.find(c => c.name === 'Internet a technologie')?.items || []),
-      ...(featuresData.categories.find(c => c.name === 'Zábava a stravování')?.items || []),
-    ],
-  },
-  {
-    name: 'Pro děti',
-    icon: 'baby',
-    items: featuresData.categories.find(c => c.name === 'Pro děti')?.items || [],
-  },
-];
-
-// Services and pet policy as footer note
-const petPolicy = featuresData.categories.find(c => c.name === 'Mazlíčci')?.items[0];
+// Use categories directly from CMS data
+const categories = featuresData.categories;
 ---
 
 <section id="vybaveni" class="py-12 md:py-16 bg-sand-50">
@@ -87,22 +37,10 @@ const petPolicy = featuresData.categories.find(c => c.name === 'Mazlíčci')?.it
       <p class="text-charcoal-600">Vše pro pohodlný pobyt až {siteData.capacity.max_guests} hostů</p>
     </div>
 
-    <!-- Key Highlights Strip (replaces featured cards + stats bar) -->
-    <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 p-4 bg-white rounded-xl border border-sand-200">
-      {keyHighlights.map((highlight) => (
-        <div class={`flex items-center gap-2 px-3 py-2 rounded-lg ${highlight.accent ? 'bg-moss-50 text-moss-700' : 'text-charcoal-700'}`}>
-          <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <Fragment set:html={iconMap[highlight.icon]} />
-          </svg>
-          <span class={`text-sm font-medium ${highlight.accent ? '' : ''}`}>{highlight.label}</span>
-        </div>
-      ))}
-    </div>
-
     <!-- Compact Category Grid with Accordion -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {consolidatedCategories.map((category, index) => (
-        <details class="equipment-category group bg-white rounded-xl border border-sand-200 overflow-hidden" open={index === 0}>
+      {categories.map((category, index) => (
+        <details class="equipment-category group bg-white rounded-xl border border-sand-200 overflow-hidden">
           <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-sand-50 transition-colors list-none">
             <div class="flex items-center gap-3">
               <div class="w-9 h-9 flex items-center justify-center rounded-lg bg-moss-50 text-moss-600">
@@ -137,22 +75,6 @@ const petPolicy = featuresData.categories.find(c => c.name === 'Mazlíčci')?.it
       ))}
     </div>
 
-    <!-- Compact Footer: Services + Pet Policy -->
-    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-charcoal-600">
-      {featuresData.services && featuresData.services.length > 0 && (
-        <div class="flex items-center gap-2">
-          <span class="text-charcoal-400">Služby na požádání:</span>
-          <span>{featuresData.services.map(s => s.name.split(' ').slice(0, 2).join(' ')).join(' | ')}</span>
-        </div>
-      )}
-      {petPolicy && (
-        <div class="flex items-center gap-2 px-3 py-1 bg-sand-100 rounded-full">
-          <span>Mazlíčci vítáni</span>
-          <span class="text-charcoal-400 text-xs">{petPolicy.note}</span>
-        </div>
-      )}
-    </div>
-
   </div>
 </section>
 
@@ -181,3 +103,33 @@ const petPolicy = featuresData.categories.find(c => c.name === 'Mazlíčci')?.it
     }
   }
 </style>
+
+<script>
+  // Open all equipment cards on desktop, keep closed on mobile
+  function initEquipmentCards() {
+    const cards = document.querySelectorAll('.equipment-category');
+    const isDesktop = window.innerWidth >= 1024; // lg breakpoint
+
+    cards.forEach(card => {
+      if (isDesktop) {
+        card.setAttribute('open', '');
+      } else {
+        card.removeAttribute('open');
+      }
+    });
+  }
+
+  // Run on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEquipmentCards);
+  } else {
+    initEquipmentCards();
+  }
+
+  // Re-run on window resize (debounced)
+  let resizeTimeout: number;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = window.setTimeout(initEquipmentCards, 150);
+  });
+</script>

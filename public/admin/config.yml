@@ -2,6 +2,9 @@ backend:
   name: git-gateway
   branch: main
 
+# Pro lokální vývoj s reálnými daty
+local_backend: true
+
 media_folder: "public/images/original"
 public_folder: "/images/original"
 
@@ -14,18 +17,68 @@ collections:
         file: "src/data/site.yaml"
         fields:
           - { label: "Název chalupy", name: "name", widget: "string" }
-          - { label: "Slogan", name: "slogan", widget: "string" }
           - { label: "Popis", name: "description", widget: "text" }
+
+          - { label: "Hero slogan", name: "hero_slogan", widget: "string", hint: "Text zobrazený ve velké hero sekci" }
+
+          - label: "Hero carousel obrázky"
+            name: "hero_images"
+            widget: "list"
+            fields:
+              - { label: "Cesta k obrázku", name: "path", widget: "string", hint: "např. /images/large/..." }
+              - { label: "Alt text", name: "alt", widget: "string" }
+
+          - label: "Lokalita"
+            name: "location"
+            widget: "object"
+            fields:
+              - { label: "Adresa", name: "address", widget: "string" }
+              - { label: "Region", name: "region", widget: "string" }
+              - { label: "Země", name: "country", widget: "string" }
+              - label: "GPS souřadnice"
+                name: "gps"
+                widget: "object"
+                fields:
+                  - { label: "Latitude", name: "lat", widget: "number", value_type: "float", step: 0.00001 }
+                  - { label: "Longitude", name: "lng", widget: "number", value_type: "float", step: 0.00001 }
+
+          - label: "Kapacita"
+            name: "capacity"
+            widget: "object"
+            fields:
+              - { label: "Max. počet hostů", name: "max_guests", widget: "number" }
+              - { label: "Celkem pokojů", name: "total_rooms", widget: "number" }
+
           - label: "Kontakt"
             name: "contact"
             widget: "object"
             fields:
               - { label: "Email", name: "email", widget: "string" }
               - { label: "Telefon", name: "phone", widget: "string" }
-          - label: "Rychlé benefity"
-            name: "highlights"
+
+          - label: "SEO Metadata"
+            name: "meta"
+            widget: "object"
+            fields:
+              - { label: "Title (meta tag)", name: "title", widget: "string" }
+              - { label: "Description (meta tag)", name: "description", widget: "text" }
+              - label: "Klíčová slova"
+                name: "keywords"
+                widget: "list"
+                field: { label: "Klíčové slovo", name: "keyword", widget: "string" }
+
+          - label: "Hodnocení"
+            name: "rating"
+            widget: "object"
+            fields:
+              - { label: "Skóre", name: "score", widget: "number", value_type: "float", step: 0.1, min: 0, max: 5 }
+              - { label: "Počet recenzí", name: "reviews_count", widget: "number" }
+
+          - label: "Amenity tagy (pro USP sekci)"
+            name: "amenity_tags"
             widget: "list"
-            field: { label: "Benefit", name: "benefit", widget: "string" }
+            hint: "Zobrazují se pod statistikami (např. Sauna, WiFi, Krb...)"
+            field: { label: "Tag", name: "tag", widget: "string" }
 
       - label: "Ceník"
         name: "pricing"
@@ -47,7 +100,6 @@ collections:
               - { label: "Název", name: "name", widget: "string" }
               - { label: "Cena", name: "price", widget: "number" }
               - { label: "Jednotka", name: "unit", widget: "string" }
-              - { label: "Povinné", name: "mandatory", widget: "boolean", default: false }
 
           - label: "Check-in / Check-out"
             name: "checkin_checkout"
@@ -62,43 +114,228 @@ collections:
             widget: "list"
             field: { label: "Poznámka", name: "note", widget: "string" }
 
-      - label: "Kalendář"
-        name: "calendar"
-        file: "src/data/calendar.yaml"
-        fields:
-          - { label: "Google Calendar Embed URL", name: "google_calendar_embed", widget: "string", required: false }
+          - label: "Platební podmínky"
+            name: "payment"
+            widget: "object"
+            fields:
+              - { label: "Záloha (%)", name: "deposit_percent", widget: "number", min: 0, max: 100 }
+              - { label: "Poznámka k záloze", name: "deposit_note", widget: "string" }
+              - { label: "Doplatek", name: "final_payment", widget: "string" }
+              - label: "Akceptované platební metody"
+                name: "accepted_methods"
+                widget: "list"
+                field: { label: "Metoda", name: "method", widget: "string" }
 
-          - label: "Obsazené termíny"
-            name: "occupied_dates"
+          - label: "Stornopodmínky"
+            name: "cancellation"
             widget: "list"
             fields:
-              - { label: "Od", name: "from", widget: "date" }
-              - { label: "Do", name: "to", widget: "date" }
-              - label: "Status"
-                name: "status"
-                widget: "select"
-                options: ["obsazeno", "rezervace", "volno"]
-              - { label: "Poznámka", name: "note", widget: "string", required: false }
-
-          - label: "Poznámky"
-            name: "notes"
-            widget: "list"
-            field: { label: "Poznámka", name: "note", widget: "string" }
+              - { label: "Období", name: "period", widget: "string" }
+              - { label: "Poplatek (%)", name: "fee_percent", widget: "number", required: false, min: 0, max: 100, hint: "Procento z celkové ceny" }
+              - { label: "Popis", name: "description", widget: "string" }
 
       - label: "O chalupě"
         name: "about"
         file: "src/data/about.yaml"
         fields:
-          - { label: "Popis", name: "description", widget: "text" }
+          - label: "Příběh chalupy (carousel slidy)"
+            name: "about_slides"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "number" }
+              - { label: "Text", name: "text", widget: "text" }
+              - { label: "Obrázek (cesta)", name: "image", widget: "string", hint: "např. /images/large/..." }
+              - { label: "Alt text obrázku", name: "imageAlt", widget: "string" }
 
-          - label: "Historie"
-            name: "history"
+          - label: "Lokalita a okolí"
+            name: "location"
+            widget: "object"
+            fields:
+              - { label: "Popis", name: "description", widget: "text" }
+              - label: "Vzdálenosti"
+                name: "distances"
+                widget: "list"
+                fields:
+                  - { label: "Místo", name: "place", widget: "string" }
+                  - { label: "Vzdálenost", name: "distance", widget: "string" }
+                  - { label: "Ikona", name: "icon", widget: "string" }
+              - label: "Aktivity"
+                name: "activities"
+                widget: "object"
+                fields:
+                  - label: "Léto"
+                    name: "summer"
+                    widget: "list"
+                    field: { label: "Aktivita", name: "activity", widget: "string" }
+                  - label: "Zima"
+                    name: "winter"
+                    widget: "list"
+                    field: { label: "Aktivita", name: "activity", widget: "string" }
+
+      - label: "Vybavení"
+        name: "features"
+        file: "src/data/features.yaml"
+        fields:
+          - label: "Kategorie"
+            name: "categories"
+            widget: "list"
+            fields:
+              - { label: "Název kategorie", name: "name", widget: "string" }
+              - { label: "Ikona", name: "icon", widget: "string", hint: "např. droplet, chef-hat, home, wifi, beer, tree-pine, baby, dog" }
+              - label: "Položky"
+                name: "items"
+                widget: "list"
+                fields:
+                  - { label: "Název", name: "name", widget: "string" }
+                  - { label: "Zvýraznit", name: "highlight", widget: "boolean", default: false, required: false }
+                  - { label: "Poznámka", name: "note", widget: "string", required: false }
+
+          - label: "Služby v lokalitě"
+            name: "services"
+            widget: "list"
+            fields:
+              - { label: "Název služby", name: "name", widget: "string" }
+
+      - label: "Pokoje"
+        name: "rooms"
+        file: "src/data/rooms.yaml"
+        fields:
+          - label: "Hero sekce"
+            name: "hero"
             widget: "object"
             fields:
               - { label: "Nadpis", name: "title", widget: "string" }
-              - { label: "Obsah", name: "content", widget: "text" }
+              - { label: "Popisek", name: "subtitle", widget: "string", hint: "Text pod nadpisem" }
+              - { label: "Obrázek (cesta)", name: "image", widget: "string", hint: "např. /images/large/..." }
+              - { label: "Alt text obrázku", name: "image_alt", widget: "string" }
 
-          - label: "Speciální nabídky"
-            name: "special_offers"
+          - label: "Seznam pokojů"
+            name: "rooms"
             widget: "list"
-            field: { label: "Nabídka", name: "offer", widget: "string" }
+            fields:
+              - { label: "ID", name: "id", widget: "number" }
+              - { label: "Název pokoje", name: "name", widget: "string" }
+              - { label: "Kapacita (počet lůžek)", name: "capacity", widget: "number" }
+              - { label: "Typ pokoje", name: "type", widget: "string" }
+              - label: "Patro"
+                name: "floor"
+                widget: "select"
+                options: ["přízemí", "patro", "podkroví"]
+              - { label: "Popis", name: "description", widget: "text", required: false }
+              - { label: "Zvýraznit", name: "highlight", widget: "boolean", default: false, required: false }
+              - label: "Galerie obrázků"
+                name: "images"
+                widget: "list"
+                required: false
+                hint: "Seznam cest k obrázkům pokoje (např. /images/large/...)"
+                field: { label: "Cesta k obrázku", name: "image", widget: "string" }
+
+          - label: "Souhrn kapacity"
+            name: "summary"
+            widget: "object"
+            fields:
+              - { label: "Celkem pokojů", name: "total_rooms", widget: "number" }
+              - { label: "Celková kapacita", name: "total_capacity", widget: "number" }
+              - { label: "Počet pater", name: "total_floors", widget: "number" }
+              - { label: "Počet přistýlek", name: "extra_beds", widget: "number" }
+              - { label: "Nadpis info poznámky", name: "note_title", widget: "string" }
+              - { label: "Poznámka", name: "note", widget: "string", required: false }
+
+          - label: "Statistiky - labely"
+            name: "stats_labels"
+            widget: "object"
+            fields:
+              - { label: "Label: Pokoje", name: "rooms", widget: "string" }
+              - { label: "Label: Kapacita", name: "capacity", widget: "string" }
+              - { label: "Label: Patra", name: "floors", widget: "string" }
+              - { label: "Label: Přistýlky", name: "extra_beds", widget: "string" }
+
+          - label: "Filter - labely"
+            name: "filter_labels"
+            widget: "object"
+            fields:
+              - { label: "Všechny pokoje", name: "all", widget: "string" }
+              - { label: "Přízemí", name: "ground_floor", widget: "string" }
+              - { label: "Patro", name: "first_floor", widget: "string" }
+              - { label: "Podkroví", name: "attic", widget: "string" }
+
+          - label: "Speciální prostor (featured sekce)"
+            name: "featured_section"
+            widget: "object"
+            fields:
+              - { label: "Badge text", name: "badge", widget: "string" }
+              - { label: "Nadpis", name: "title", widget: "string" }
+              - { label: "Popis", name: "description", widget: "text" }
+              - label: "Vlastnosti (features)"
+                name: "features"
+                widget: "list"
+                field: { label: "Vlastnost", name: "feature", widget: "string" }
+              - { label: "Obrázek (cesta)", name: "image", widget: "string", hint: "např. /images/large/..." }
+              - { label: "Alt text obrázku", name: "image_alt", widget: "string" }
+
+          - label: "CTA sekce (Call to Action)"
+            name: "cta"
+            widget: "object"
+            fields:
+              - { label: "Nadpis", name: "title", widget: "string" }
+              - { label: "Popis", name: "description", widget: "text" }
+              - label: "Tlačítka"
+                name: "buttons"
+                widget: "list"
+                fields:
+                  - { label: "Text tlačítka", name: "text", widget: "string" }
+                  - { label: "Link (URL)", name: "link", widget: "string" }
+                  - label: "Styl"
+                    name: "style"
+                    widget: "select"
+                    options: ["primary", "secondary"]
+                    default: "primary"
+
+      - label: "Recenze"
+        name: "reviews"
+        file: "src/data/reviews.yaml"
+        fields:
+          - label: "Recenze návštěvníků"
+            name: "reviews"
+            widget: "list"
+            fields:
+              - { label: "Autor", name: "author", widget: "string" }
+              - { label: "Text recenze", name: "text", widget: "text" }
+              - { label: "Hodnocení (1-5)", name: "rating", widget: "number", min: 1, max: 5, default: 5 }
+
+      - label: "FAQ"
+        name: "faq"
+        file: "src/data/faq.yaml"
+        fields:
+          - label: "Otázky a odpovědi"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Otázka", name: "question", widget: "string" }
+              - { label: "Odpověď", name: "answer", widget: "text" }
+
+      - label: "Galerie"
+        name: "gallery"
+        file: "src/data/gallery.yaml"
+        fields:
+          - label: "Kategorie fotografií"
+            name: "categories"
+            widget: "list"
+            fields:
+              - { label: "ID kategorie", name: "id", widget: "string", hint: "např. exterior, rooms, kitchen..." }
+              - { label: "Název kategorie", name: "name", widget: "string" }
+              - { label: "Popis", name: "description", widget: "text" }
+              - { label: "Pořadí", name: "order", widget: "number" }
+
+          - label: "Fotografie"
+            name: "images"
+            widget: "list"
+            fields:
+              - { label: "Název souboru", name: "filename", widget: "string", hint: "např. exterier-chalupy-c9c9-570474.webp" }
+              - label: "Kategorie"
+                name: "category"
+                widget: "select"
+                options: ["exterior", "winter", "rooms", "kitchen", "bathroom", "pub", "floorplans", "surroundings"]
+              - { label: "Alt text", name: "alt", widget: "string" }
+              - { label: "Featured (zvýrazněná)", name: "featured", widget: "boolean", default: false, required: false }
+              - { label: "Pořadí", name: "order", widget: "number" }

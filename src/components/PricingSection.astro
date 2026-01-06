@@ -9,11 +9,6 @@ const pricingData = yaml.load(fs.readFileSync(pricingDataPath, 'utf8'));
 
 <section id="cenik" class="section bg-white">
   <div class="container">
-    <h2 class="text-center mb-4">Ceník</h2>
-    <p class="text-center text-charcoal-600 mb-12 max-w-2xl mx-auto">
-      Transparentní ceník bez skrytých poplatků
-    </p>
-
     <!-- Main Pricing Table -->
     <div class="max-w-4xl mx-auto mb-12">
       <div class="bg-gradient-to-br from-sand-50 to-moss-50 rounded-xl overflow-hidden shadow-lg border border-sand-200">
@@ -43,76 +38,123 @@ const pricingData = yaml.load(fs.readFileSync(pricingDataPath, 'utf8'));
       </div>
     </div>
 
-    <!-- Additional Fees -->
-    <div class="max-w-4xl mx-auto mb-12">
-      <h3 class="text-2xl font-semibold text-wood-900 mb-6">Dodatečné poplatky</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {pricingData.fees.map((fee) => (
-          <div class="bg-sand-50 rounded-lg p-4 border border-sand-200">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="font-semibold text-wood-900">{fee.name}</p>
-                <p class="text-sm text-charcoal-600">{fee.unit}</p>
-              </div>
-              <p class="text-lg font-bold text-charcoal-900">
-                {fee.note && <span class="text-sm font-normal">{fee.note} </span>}
-                {fee.price} Kč
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+    <!-- Link to open modal with additional info -->
+    <div class="max-w-4xl mx-auto mb-12 text-center">
+      <button
+        id="open-pricing-modal"
+        class="inline-flex items-center gap-2 text-moss-600 hover:text-moss-700 font-semibold text-lg transition-colors"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        Zobrazit dodatečné poplatky a podmínky
+      </button>
     </div>
 
-    <!-- Check-in/Check-out -->
-    {pricingData.checkin_checkout && (
-      <div class="max-w-4xl mx-auto mb-12 bg-moss-50 border-2 border-moss-200 rounded-xl p-6">
-        <h3 class="text-xl font-semibold text-wood-900 mb-4">Check-in / Check-out</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="flex items-center gap-3">
-            <svg class="w-8 h-8 text-moss-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+    <!-- Modal with additional fees and policies -->
+    <dialog
+      id="pricing-modal"
+      class="max-w-4xl w-full backdrop:bg-black/50 rounded-2xl shadow-2xl border-2 border-sand-200 p-0"
+    >
+      <div class="bg-white rounded-2xl overflow-hidden">
+        <!-- Modal header -->
+        <div class="bg-moss-600 text-white px-6 py-4 flex justify-end sticky top-0">
+          <button
+            id="close-pricing-modal"
+            class="p-2 hover:bg-moss-700 rounded-lg transition-colors"
+            aria-label="Zavřít"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
-            <div>
-              <p class="font-semibold text-wood-900">Check-in od</p>
-              <p class="text-charcoal-700">{pricingData.checkin_checkout.checkin_from}</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-3">
-            <svg class="w-8 h-8 text-moss-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-            </svg>
-            <div>
-              <p class="font-semibold text-wood-900">Check-out do</p>
-              <p class="text-charcoal-700">{pricingData.checkin_checkout.checkout_until}</p>
-            </div>
-          </div>
+          </button>
         </div>
-        {pricingData.checkin_checkout.note && (
-          <p class="mt-4 text-sm text-charcoal-600 italic">{pricingData.checkin_checkout.note}</p>
-        )}
-      </div>
-    )}
 
-    <!-- Cancellation Policy -->
-    {pricingData.cancellation && (
-      <div class="max-w-4xl mx-auto bg-wood-50 border-2 border-wood-200 rounded-xl p-6">
-        <h3 class="text-xl font-semibold text-wood-900 mb-4">Stornopodmínky</h3>
-        <ul class="space-y-3">
-          {pricingData.cancellation.map((policy) => (
-            <li class="flex items-start gap-3">
-              <svg class="w-5 h-5 text-wood-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-              </svg>
-              <div>
-                <span class="font-semibold text-wood-900">{policy.period}:</span>
-                <span class="text-charcoal-700"> {policy.description}</span>
+        <!-- Modal content -->
+        <div class="p-8 max-h-[70vh] overflow-y-auto space-y-8">
+          <!-- Additional Fees -->
+          <div>
+            <h4 class="text-xl font-semibold text-wood-900 mb-4 pb-2 border-b border-sand-200">Dodatečné poplatky</h4>
+            <ul class="space-y-3">
+              {pricingData.fees.map((fee) => (
+                <li class="flex justify-between items-start">
+                  <div>
+                    <p class="font-medium text-charcoal-900">{fee.name}</p>
+                    <p class="text-sm text-charcoal-600">{fee.unit}</p>
+                  </div>
+                  <p class="text-right">
+                    {fee.note && <span class="text-sm text-charcoal-600 block">{fee.note}</span>}
+                    <span class="font-semibold text-charcoal-900">{fee.price} Kč</span>
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Check-in / Check-out -->
+          {pricingData.checkin_checkout && (
+            <div>
+              <h4 class="text-xl font-semibold text-wood-900 mb-4 pb-2 border-b border-sand-200">Check-in / Check-out</h4>
+              <div class="space-y-2">
+                <p class="text-charcoal-700">
+                  <span class="font-semibold text-wood-900">Check-in od:</span>
+                  {' '}{pricingData.checkin_checkout.checkin_from}
+                </p>
+                <p class="text-charcoal-700">
+                  <span class="font-semibold text-wood-900">Check-out do:</span>
+                  {' '}{pricingData.checkin_checkout.checkout_until}
+                </p>
+                {pricingData.checkin_checkout.note && (
+                  <p class="text-sm text-charcoal-600 italic mt-2">{pricingData.checkin_checkout.note}</p>
+                )}
               </div>
-            </li>
-          ))}
-        </ul>
+            </div>
+          )}
+
+          <!-- Payment Conditions -->
+          {pricingData.payment && (
+            <div>
+              <h4 class="text-xl font-semibold text-wood-900 mb-4 pb-2 border-b border-sand-200">Platební podmínky</h4>
+              <div class="space-y-3">
+                <p class="text-charcoal-700">
+                  <span class="font-semibold text-wood-900">Záloha:</span>
+                  {' '}{pricingData.payment.deposit_percent}% {pricingData.payment.deposit_note ? `(${pricingData.payment.deposit_note})` : ''}
+                </p>
+                <p class="text-charcoal-700">
+                  <span class="font-semibold text-wood-900">Doplatek:</span>
+                  {' '}{pricingData.payment.final_payment}
+                </p>
+                {pricingData.payment.accepted_methods && pricingData.payment.accepted_methods.length > 0 && (
+                  <div>
+                    <p class="font-semibold text-wood-900 mb-2">Způsoby platby:</p>
+                    <ul class="list-disc list-inside space-y-1 ml-4">
+                      {pricingData.payment.accepted_methods.map((method) => (
+                        <li class="text-charcoal-700">{method}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          <!-- Cancellation Policy -->
+          {pricingData.cancellation && (
+            <div>
+              <h4 class="text-xl font-semibold text-wood-900 mb-4 pb-2 border-b border-sand-200">Stornopodmínky</h4>
+              <ul class="space-y-2">
+                {pricingData.cancellation.map((policy) => (
+                  <li class="text-charcoal-700">
+                    <span class="font-semibold text-wood-900">{policy.period}:</span>
+                    {' '}{policy.description}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
-    )}
+    </dialog>
 
     <!-- Notes -->
     {pricingData.notes && (
@@ -131,3 +173,35 @@ const pricingData = yaml.load(fs.readFileSync(pricingDataPath, 'utf8'));
     </div>
   </div>
 </section>
+
+<script>
+  const openModalBtn = document.getElementById('open-pricing-modal');
+  const closeModalBtn = document.getElementById('close-pricing-modal');
+  const modal = document.getElementById('pricing-modal') as HTMLDialogElement;
+
+  openModalBtn?.addEventListener('click', () => {
+    modal?.showModal();
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeModalBtn?.addEventListener('click', () => {
+    modal?.close();
+    document.body.style.overflow = '';
+  });
+
+  // Close on backdrop click
+  modal?.addEventListener('click', (e) => {
+    const rect = modal.getBoundingClientRect();
+    const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+      rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
+    if (!isInDialog) {
+      modal.close();
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Close on Escape key
+  modal?.addEventListener('cancel', () => {
+    document.body.style.overflow = '';
+  });
+</script>

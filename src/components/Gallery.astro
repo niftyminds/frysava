@@ -1,24 +1,27 @@
 ---
+import yaml from 'js-yaml';
 import fs from 'fs';
 import path from 'path';
 
-// Safe image loading with error handling
-let imageFiles: string[] = [];
-try {
-  const imagesDir = path.join(process.cwd(), 'public/images/large');
-  if (fs.existsSync(imagesDir)) {
-    imageFiles = fs.readdirSync(imagesDir);
-  } else {
-    console.warn('Gallery: Images directory not found:', imagesDir);
-  }
-} catch (error) {
-  console.error('Gallery: Error reading images directory:', error);
-}
+// Load gallery data from CMS
+const galleryDataPath = path.join(process.cwd(), 'src/data/gallery.yaml');
+const galleryData = yaml.load(fs.readFileSync(galleryDataPath, 'utf8'));
 
-const allImages = imageFiles.filter(f => f.endsWith('.webp'));
+// Sort images by order
+const allImages = galleryData.images
+  .sort((a, b) => a.order - b.order)
+  .map(img => ({
+    filename: img.filename,
+    alt: img.alt,
+    category: img.category,
+    featured: img.featured || false
+  }));
 
-// Select 5 images for the carousel preview
-const carouselImages = allImages.slice(0, 5);
+// Select featured images for carousel, or first 5 if no featured
+const featuredImages = allImages.filter(img => img.featured);
+const carouselImages = featuredImages.length > 0
+  ? featuredImages.slice(0, 5)
+  : allImages.slice(0, 5);
 ---
 
 <section class="w-full overflow-hidden bg-sand-50 py-16" id="galerie">
@@ -36,15 +39,17 @@ const carouselImages = allImages.slice(0, 5);
       {carouselImages.concat(carouselImages).map((image, index) => {
         const imageNumber = (index % carouselImages.length) + 1;
         const actualIndex = index % carouselImages.length;
+        // Find actual index in allImages for lightbox
+        const fullImageIndex = allImages.findIndex(img => img.filename === image.filename);
         return (
           <button
             class="flex-shrink-0 w-[90vw] sm:w-[500px] h-[250px] sm:h-[400px] cursor-pointer"
             data-gallery-open
-            data-start-index={actualIndex}
+            data-start-index={fullImageIndex}
           >
             <img
-              src={`/images/large/${image}`}
-              alt={`Fotografie chalupy na Fryšavě - obrázek ${imageNumber}`}
+              src={`/images/large/${image.filename}`}
+              alt={image.alt}
               class="w-full h-full object-cover rounded-lg shadow-lg hover:shadow-2xl transition-shadow"
               loading={index < 3 ? "eager" : "lazy"}
             />
@@ -218,9 +223,9 @@ const carouselImages = allImages.slice(0, 5);
     }
 
     function updateLightbox() {
-      const imagePath = '/images/large/' + allImages[currentImageIndex];
+      const imagePath = '/images/large/' + allImages[currentImageIndex].filename;
       lightboxImage.src = imagePath;
-      lightboxImage.alt = 'Fotografie chalupy na Fryšavě - obrázek ' + (currentImageIndex + 1);
+      lightboxImage.alt = allImages[currentImageIndex].alt;
       lightboxCounter.textContent = (currentImageIndex + 1) + ' / ' + allImages.length;
     }
 
@@ -232,7 +237,7 @@ const carouselImages = allImages.slice(0, 5);
       document.body.style.overflow = 'hidden';
 
       // Debug: Check if lightbox is actually visible
-      console.log('Lightbox opened with image:', allImages[currentImageIndex]);
+      console.log('Lightbox opened with image:', allImages[currentImageIndex].filename);
       console.log('Lightbox classList:', lightbox.className);
       console.log('Lightbox display:', window.getComputedStyle(lightbox).display);
       console.log('Lightbox z-index:', window.getComputedStyle(lightbox).zIndex);
@@ -299,10 +304,45 @@ const carouselImages = allImages.slice(0, 5);
       }
     });
 
+    // Touch/Swipe navigation for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
+
+    lightbox.addEventListener('touchstart', function(e) {
+      if (!lightbox.classList.contains('active')) return;
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', function(e) {
+      if (!lightbox.classList.contains('active')) return;
+      touchEndX = e.changedTouches[0].screenX;
+      touchEndY = e.changedTouches[0].screenY;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeThreshold = 50; // minimum distance for a swipe
+      const horizontalSwipe = touchEndX - touchStartX;
+      const verticalSwipe = Math.abs(touchEndY - touchStartY);
+
+      // Only trigger if horizontal swipe is significantly larger than vertical
+      if (Math.abs(horizontalSwipe) > swipeThreshold && Math.abs(horizontalSwipe) > verticalSwipe) {
+        if (horizontalSwipe > 0) {
+          // Swipe right - show previous image
+          navigateLightbox('prev');
+        } else {
+          // Swipe left - show next image
+          navigateLightbox('next');
+        }
+      }
+    }
+
     console.log('Lightbox initialized successfully');
   }
 
   // Run initialization immediately (Astro scripts are already deferred)
   initLightbox();
 </script>
-

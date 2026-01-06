@@ -1,87 +1,65 @@
-# Ceník chalupy na Fryšavě
-
-# Základní ceny za noc (na osobu)
 seasons:
-  - name: "Letní sezóna"
-    period: "15.6 - 15.10"
+  - name: Letní sezóna
+    period: "od 15. června do 15. října "
     price_per_person: 750
-    currency: "Kč"
-
-  - name: "Zimní sezóna"
-    period: "15.12 - 31.3"
+    currency: Kč
+  - name: Zimní sezóna
+    period: od 15. prosince do 31. března
     price_per_person: 750
-    currency: "Kč"
-
-  - name: "Mimo sezónu"
-    period: "ostatní období"
+    currency: Kč
+  - name: Mimo sezónu
+    period: ostatní období
     price_per_person: 650
-    currency: "Kč"
-
-# Dodatečné poplatky
+    currency: Kč
 fees:
-  - name: "Rekreační poplatek obci"
+  - name: Rekreační poplatek obci
     price: 35
-    unit: "osoba/noc"
+    unit: osoba/noc
     mandatory: true
-
-  - name: "Závěrečný úklid"
+  - name: Závěrečný úklid
     price: 1500
-    unit: "jednorázově"
-    note: "od"
+    unit: jednorázově
+    note: od
     mandatory: true
-
-  - name: "Pobyt mazlíčka"
+  - name: Pobyt mazlíčka
     price: 300
-    unit: "noc"
+    unit: noc
     mandatory: false
-
-  - name: "Dřevo na oheň"
+  - name: Dřevo na oheň
     price: 400
-    unit: "pytel (~25 kg)"
+    unit: pytel (~25 kg)
     mandatory: false
-
-  - name: "Ohřev sauny"
+  - name: Ohřev sauny
     price: 700
-    unit: "3 hodiny"
+    unit: 3 hodiny
     mandatory: false
-
-  - name: "Přistýlka (nad 20 osob)"
+  - name: Přistýlka (nad 20 osob)
     price: 500
-    unit: "osoba/noc"
+    unit: osoba/noc
     mandatory: false
-
-# Check-in / Check-out (TODO: doplnit skutečné časy)
 checkin_checkout:
-  checkin_from: "15:00"
-  checkout_until: "10:00"
-  note: "Jiné časy po domluvě s majitelem"
-
-# Stornopodmínky
-cancellation:
-  - period: "Do 30 dnů před příjezdem"
-    fee: 0
-    fee_percent: 0
-    description: "Storno zdarma"
-
-  - period: "Do 14 dnů před příjezdem"
-    fee_percent: 50
-    description: "50% z celkové ceny"
-
-  - period: "Méně než 14 dnů před příjezdem"
-    fee_percent: 100
-    description: "100% z celkové ceny"
-
-# Platební podmínky (TODO: doplnit skutečné údaje)
+  checkin_from: 15:00
+  checkout_until: 10:00
+  note: "Jiné časy po domluvě s majitelem. "
+notes:
+  - "Preferujeme pronájem pouze jako celek pro jednu skupinu / rodinu. "
+  - "Ceny se mohou lišit, aktuální cenu si ověřte u majitele. "
+  - "Pro firemní akce a speciální události možnost individuální cenové nabídky. "
 payment:
   deposit_percent: 50
-  deposit_note: "Záloha 50% při rezervaci"
-  final_payment: "Doplatek při příjezdu"
+  deposit_note: záloha 50 %, která splatná při rezervaci
+  final_payment: Doplatek při příjezdu
   accepted_methods:
-    - "Hotovost"
-    - "Bankovní převod"
-
-# Poznámky
-notes:
-  - "Pronájem pouze jako celek pro jednu skupinu/rodinu"
-  - "Ceny jsou orientační, aktuální cenu si ověřte u majitele"
-  - "Pro firemní akce a speciální události možnost individuální cenové nabídky"
+    - Hotovost
+    - Bankovní převod
+cancellation:
+  - period: Do 30 dnů před příjezdem
+    fee: 0
+    fee_percent: 0
+    description: Storno zdarma
+  - period: Do 14 dnů před příjezdem
+    fee_percent: 50
+    description: 50% z celkové ceny
+  - period: Méně než 14 dnů před příjezdem
+    fee_percent: 100
+    description: 100% z celkové ceny

@@ -1,117 +1,71 @@
-# Vybavení chalupy na Fryšavě
-
 categories:
-  - name: "Sociální zařízení"
-    icon: "droplet"
+  - name: Nadstandardní výbava
+    icon: sauna
     items:
-      - name: "3× koupelna"
-        available: true
-      - name: "2× sprchový kout"
-        available: true
-      - name: "3× WC"
-        available: true
-      - name: "Sauna pro 5 osob"
+      - name: Sauna pro 5 osob
         available: true
         highlight: true
-      - name: "Pračka"
-        available: true
-
-  - name: "Kuchyně"
-    icon: "chef-hat"
-    items:
-      - name: "Plně vybavená kuchyně"
-        available: true
-      - name: "Myčka nádobí"
-        available: true
-      - name: "Kávovar a espresso stroj"
-        available: true
-      - name: "Mikrovlnná trouba"
-        available: true
-      - name: "Lednice a mraznička"
-        available: true
-      - name: "Kamna na dřevo s pečícími troubami"
-        available: true
-
-  - name: "Společné prostory"
-    icon: "home"
-    items:
-      - name: "Dvě jídelny"
-        available: true
-      - name: "Společenská místnost"
-        available: true
-      - name: "Prostorné podkroví (~90 m²)"
-        available: true
-        note: "S ložním polem a galerií pro děti"
-
-  - name: "Internet a technologie"
-    icon: "wifi"
-    items:
-      - name: "VDSL internet bez agregace"
+      - name: Výčepní zařízení
         available: true
         highlight: true
-      - name: "Silný Wi-Fi signál v celém objektu"
-        available: true
-      - name: "TV se satelitními programy"
-        available: true
-      - name: "CD přehrávače"
-        available: true
-
-  - name: "Zábava a stravování"
-    icon: "beer"
-    items:
-      - name: "Profesionální výčepní zařízení"
+      - name: 3 koupelny
         available: true
         highlight: true
-        note: "S chlazením"
-      - name: "Pivo Dalešice na čepu (11° a 12°)"
+  - name: Kuchyně
+    icon: chef-hat
+    items:
+      - name: Plně vybavená kuchyně
+        available: true
+        note: lednice, mraznička, myčka, kávovar, espresso stroj
+      - name: Kamna na dřevo s pečícími troubami
+        available: true
+  - name: Společné prostory
+    icon: home
+    items:
+      - name: Dvě jídelny
+        available: true
+      - name: Společenská místnost
+        available: true
+      - name: Prostorné podkroví (~90 m²)
+        available: true
+        note: ""
+  - name: Internet a technologie
+    icon: wifi
+    items:
+      - name: Rychlý a stabilní internet
         available: true
         highlight: true
-
-  - name: "Venkovní vybavení"
-    icon: "tree-pine"
+      - name: Silný Wi-Fi signál v celém objektu
+        available: true
+      - name: TV se satelitními programy
+        available: true
+      - name: Projektor & hudební přehrávač
+        available: true
+  - name: Venkovní vybavení
+    icon: tree-pine
     items:
-      - name: "Oplocený pozemek 300 m²"
+      - name: Oplocený pozemek 300 m²
         available: true
         highlight: true
-      - name: "Parkování pro 4 automobily"
+      - name: Parkování pro 4 automobily
         available: true
-      - name: "Ohniště"
+      - name: Ohniště & grill
         available: true
-      - name: "Gril"
+      - name: Pískoviště, houpačka & trampolína
         available: true
-      - name: "Pískoviště"
-        available: true
-      - name: "Houpačka"
-        available: true
-      - name: "Trampolína"
-        available: true
-
-  - name: "Pro děti"
-    icon: "baby"
+  - name: Pro děti
+    icon: baby
     items:
-      - name: "Dětské hřiště 300 m od chalupy"
+      - name: Dětské hřiště 300 m od chalupy
         available: true
-      - name: "Prolézačky"
+      - name: Půjčovna kol & koloběžek (dětská i dospělá)
         available: true
-      - name: "Půjčovna kol (dětská i dospělá)"
+      - name: Galerie v podkroví speciálně pro děti
         available: true
-      - name: "Terénní koloběžky"
-        available: true
-      - name: "Galerie v podkroví speciálně pro děti"
-        available: true
-
-  - name: "Mazlíčci"
-    icon: "dog"
-    items:
-      - name: "Mazlíčci vítáni"
-        available: true
-        note: "Za poplatek 300 Kč/noc"
-
-# Služby v lokalitě
 services:
-  - name: "Možnost objednání snídaně, polopenze nebo plné penze"
+  - name: Možnost objednání snídaně, polopenze nebo plné penze
     available: true
-  - name: "Pronájem jízdních kol a terénních koloběžek"
+  - name: Pronájem jízdních kol a terénních koloběžek
     available: true
-  - name: "Uskladnění sportovního vybavení"
+  - name: Uskladnění sportovního vybavení
     available: true
