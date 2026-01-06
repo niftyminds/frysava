@@ -1,11 +1,36 @@
 # Changelog - Aktualizace webu Chalupa Fryšava
 
 **Datum:** 6. ledna 2026
-**Verze:** 2.0.0
+**Verze:** 2.0.1
 
 ---
 
-## 🎯 Přehled hlavních změn
+## 🔄 Hotfix - Verze 2.0.1 (6. ledna 2026)
+
+### **Commit cf552cf - Navigace a hash odkazy**
+
+**Opravy:**
+- ✅ Přidán odkaz "Pokoje" do hlavní navigace (desktop i mobile menu)
+- ✅ Hash odkazy nyní fungují správně ze všech stránek:
+  - Na homepage: `#lokalita` (scroll na sekci)
+  - Na jiných stránkách: `/#lokalita` (přesměrování na homepage + scroll)
+- ✅ Header: Podpora `variant='light'` pro stránky s bílým pozadím
+- ✅ Mobilní logo: Zobrazení při scrollování (opacity 0 → 100)
+- ✅ Footer: Stejná logika hash odkazů jako v Header
+
+**Řešené problémy:**
+- ❌ **Před:** Stránka /pokoje existovala, ale nebyla viditelná v menu
+- ✅ **Po:** Link "Pokoje" v hlavní navigaci
+- ❌ **Před:** Kliknutí na "Lokalita" z /cenik routovalo na `/cenik/#lokalita`
+- ✅ **Po:** Správně routuje na `/#lokalita` (homepage)
+
+**Soubory:**
+- `src/components/Header.astro` - přidán /pokoje link, oprava hash logiky
+- `src/components/Footer.astro` - oprava hash logiky
+
+---
+
+## 🎯 Hlavní release - Verze 2.0.0 (6. ledna 2026)
 
 Tato aktualizace přináší **kompletní CMS integraci**, **novou galerii** a **UX vylepšení** mobilní verze webu.
 
