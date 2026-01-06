@@ -1,20 +1,41 @@
 ---
+interface Props {
+  variant?: 'dark' | 'light';
+}
+
+const { variant = 'dark' } = Astro.props;
+
+// Get current page path to determine if we're on homepage
+const currentPath = Astro.url.pathname;
+const isHomepage = currentPath === '/';
+
 const navItems = [
-  { label: 'O chalupě', href: '#o-chalupe' },
-  { label: 'Galerie', href: '#galerie' },
-  { label: 'Vybavení', href: '#vybaveni' },
+  { label: 'O chalupě', href: isHomepage ? '#o-chalupe' : '/#o-chalupe' },
+  { label: 'Galerie', href: isHomepage ? '#galerie' : '/#galerie' },
+  { label: 'Vybavení', href: isHomepage ? '#vybaveni' : '/#vybaveni' },
+  { label: 'Pokoje', href: '/pokoje' },
   { label: 'Ceník', href: '/cenik' },
-  { label: 'Lokalita', href: '#lokalita' },
+  { label: 'Lokalita', href: isHomepage ? '#lokalita' : '/#lokalita' },
 ];
+
+// Determine initial header class based on variant
+const initialHeaderClass = variant === 'light' ? 'header-solid' : 'header-transparent';
 ---
 
-<header id="header" class="fixed top-0 left-0 right-0 z-50 header-transparent transition-all duration-300">
+<header
+  id="header"
+  class={`fixed top-0 left-0 right-0 z-50 ${initialHeaderClass} transition-all duration-300`}
+  data-variant={variant}
+>
   <nav class="container mx-auto px-4 py-4">
     <div class="flex items-center justify-between">
       <!-- Logo -->
-      <a href="/" class="nav-link flex items-center gap-2 text-2xl font-serif font-semibold text-white hover:text-sand-200 transition-colors">
-        <span class="hidden sm:inline">Chalupa na Fryšavě</span>
-        <span class="sm:hidden">Fryšava</span>
+      <a
+        href="/"
+        id="header-logo"
+        class="nav-link flex items-center gap-2 text-xl sm:text-2xl font-serif font-semibold transition-all duration-300 opacity-0 md:opacity-100"
+      >
+        Chalupa na Fryšavě
       </a>
 
       <!-- Desktop Navigation -->
@@ -23,7 +44,7 @@ const navItems = [
           <li>
             <a
               href={item.href}
-              class="nav-link text-white/90 hover:text-white font-medium transition-colors"
+              class="nav-link font-medium transition-colors"
             >
               {item.label}
             </a>
@@ -32,115 +53,166 @@ const navItems = [
       </ul>
 
       <!-- CTA Button -->
-      <a href="/rezervace" class="hidden lg:inline-flex header-cta btn-primary">
+      <a href="/rezervace" class="hidden lg:inline-flex header-cta px-8 py-4 font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
         Rezervovat
       </a>
 
       <!-- Mobile Menu Button -->
       <button
         id="mobile-menu-button"
-        class="lg:hidden ml-4 p-2 text-white hover:text-sand-200"
+        class="lg:hidden p-3 nav-link transition-colors rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-moss-600"
         aria-label="Toggle menu"
+        aria-expanded="false"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
     </div>
-
-    <!-- Mobile Navigation -->
-    <div id="mobile-menu" class="hidden lg:hidden mt-4 pb-4">
-      <ul class="flex flex-col gap-3">
-        {navItems.map(item => (
-          <li>
-            <a
-              href={item.href}
-              class="nav-link block py-2 text-white/90 hover:text-white font-medium transition-colors"
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
-        <li>
-          <a
-            href="/rezervace"
-            class="nav-link block py-2 text-white/90 hover:text-white font-medium transition-colors"
-          >
-            Rezervovat
-          </a>
-        </li>
-      </ul>
-    </div>
   </nav>
 </header>
 
+<!-- Mobile Navigation - Slide from right (moved outside header) -->
+<div
+  id="mobile-menu"
+  class="mobile-menu-closed lg:hidden fixed top-0 right-0 h-full w-64 sm:w-80 shadow-2xl transform transition-transform duration-300 ease-in-out z-[9999] bg-sand-50"
+  style="background-color: #faf8f5 !important; opacity: 1 !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; pointer-events: auto !important;"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigační menu"
+>
+  <div class="flex flex-col h-full">
+    <!-- Close button -->
+    <div class="flex justify-between items-center p-4 border-b border-sand-200">
+      <span class="font-serif font-semibold text-wood-900">Menu</span>
+      <button
+        id="mobile-menu-close"
+        class="p-2.5 text-charcoal-700 hover:text-moss-600 hover:bg-sand-100 rounded-lg transition-colors"
+        aria-label="Zavřít menu"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Menu items -->
+    <ul class="flex flex-col gap-1 p-4">
+      {navItems.map(item => (
+        <li>
+          <a
+            href={item.href}
+            class="nav-link block py-3 px-4 font-medium transition-colors rounded-lg hover:bg-sand-50"
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+      <li class="mt-4">
+        <a
+          href="/rezervace"
+          class="btn-primary block text-center py-3 px-4"
+        >
+          Rezervovat
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Overlay for mobile menu (moved outside header) -->
+<div
+  id="mobile-menu-overlay"
+  class="hidden lg:hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[9998] transition-opacity duration-300"
+  style="pointer-events: auto !important;"
+  aria-hidden="true"
+></div>
+
+<style>
+  .mobile-menu-closed {
+    transform: translateX(100%);
+  }
+
+  .mobile-menu-open {
+    transform: translateX(0);
+  }
+</style>
+
 <script>
   const header = document.getElementById('header');
+  const headerLogo = document.getElementById('header-logo');
   const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
   const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+  const variant = header?.dataset.variant || 'dark';
 
   const updateHeader = () => {
     const scrollY = window.scrollY;
+    const isScrolled = scrollY > 50;
+    const isLightPage = variant === 'light';
 
-    if (scrollY > 100) {
+    // Always use dark colors on light pages OR when scrolled on dark pages
+    if (isScrolled || isLightPage) {
       header?.classList.remove('header-transparent');
       header?.classList.add('header-solid');
-
-      // Update nav links only
-      const navLinks = header?.querySelectorAll('.nav-link');
-      navLinks?.forEach(link => {
-        link.classList.remove('text-white', 'text-white/90', 'hover:text-white', 'hover:text-sand-200');
-        link.classList.add('text-charcoal-700', 'hover:text-wood-700');
-      });
-
-      // Update CTA button style
-      const ctaButton = header?.querySelector('.header-cta');
-      if (ctaButton) {
-        ctaButton.classList.remove('btn-primary');
-        ctaButton.classList.add('btn-secondary');
-      }
-
-      // Update mobile menu button
-      const menuBtn = header?.querySelector('#mobile-menu-button');
-      menuBtn?.classList.remove('text-white', 'hover:text-sand-200');
-      menuBtn?.classList.add('text-charcoal-700', 'hover:text-wood-700');
-
-    } else {
+    } else if (variant === 'dark') {
       header?.classList.remove('header-solid');
       header?.classList.add('header-transparent');
+    }
 
-      // Restore nav links
-      const navLinks = header?.querySelectorAll('.nav-link');
-      navLinks?.forEach(link => {
-        link.classList.remove('text-charcoal-700', 'hover:text-wood-700');
-        link.classList.add('text-white', 'text-white/90', 'hover:text-white');
-      });
-
-      // Restore CTA button
-      const ctaButton = header?.querySelector('.header-cta');
-      if (ctaButton) {
-        ctaButton.classList.remove('btn-secondary');
-        ctaButton.classList.add('btn-primary');
+    // Mobile logo visibility - hide at top, show when scrolling
+    if (window.innerWidth < 768) { // md breakpoint
+      if (scrollY > 20) {
+        headerLogo?.classList.remove('opacity-0');
+        headerLogo?.classList.add('opacity-100');
+      } else {
+        headerLogo?.classList.remove('opacity-100');
+        headerLogo?.classList.add('opacity-0');
       }
-
-      // Restore mobile menu button
-      const menuBtn = header?.querySelector('#mobile-menu-button');
-      menuBtn?.classList.remove('text-charcoal-700', 'hover:text-wood-700');
-      menuBtn?.classList.add('text-white', 'hover:text-sand-200');
     }
   };
 
+  // Initial call to set correct state
   updateHeader();
   window.addEventListener('scroll', updateHeader, { passive: true });
 
-  mobileMenuButton?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
-  });
+  const openMobileMenu = () => {
+    mobileMenu?.classList.remove('mobile-menu-closed');
+    mobileMenu?.classList.add('mobile-menu-open');
+    mobileMenuOverlay?.classList.remove('hidden');
+    mobileMenuButton?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+
+    // Focus management - focus close button after animation
+    setTimeout(() => mobileMenuClose?.focus(), 100);
+  };
+
+  const closeMobileMenu = () => {
+    mobileMenu?.classList.remove('mobile-menu-open');
+    mobileMenu?.classList.add('mobile-menu-closed');
+    mobileMenuOverlay?.classList.add('hidden');
+    mobileMenuButton?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+
+    // Return focus to menu button
+    mobileMenuButton?.focus();
+  };
+
+  mobileMenuButton?.addEventListener('click', openMobileMenu);
+  mobileMenuClose?.addEventListener('click', closeMobileMenu);
+  mobileMenuOverlay?.addEventListener('click', closeMobileMenu);
 
   const mobileLinks = mobileMenu?.querySelectorAll('a');
   mobileLinks?.forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu?.classList.add('hidden');
-    });
+    link.addEventListener('click', closeMobileMenu);
+  });
+
+  // Escape key handler
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileMenu?.classList.contains('mobile-menu-open')) {
+      e.preventDefault();
+      closeMobileMenu();
+    }
   });
 </script>

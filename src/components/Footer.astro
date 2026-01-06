@@ -7,6 +7,11 @@ const siteDataPath = path.join(process.cwd(), 'src/data/site.yaml');
 const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
 
 const currentYear = new Date().getFullYear();
+
+// Determine if we're on homepage to fix hash links
+const currentPath = Astro.url.pathname;
+const isHomepage = currentPath === '/';
+const hashPrefix = isHomepage ? '' : '/';
 ---
 
 <footer class="bg-wood-900 text-sand-100">
@@ -31,12 +36,12 @@ const currentYear = new Date().getFullYear();
       <div>
         <h3 class="text-white text-lg font-serif font-semibold mb-4">Rychlé odkazy</h3>
         <ul class="space-y-2 text-sm">
-          <li><a href="#o-chalupe" class="hover:text-white transition-colors">O chalupě</a></li>
-          <li><a href="#galerie" class="hover:text-white transition-colors">Galerie</a></li>
-          <li><a href="#vybaveni" class="hover:text-white transition-colors">Vybavení</a></li>
+          <li><a href={`${hashPrefix}#o-chalupe`} class="hover:text-white transition-colors">O chalupě</a></li>
+          <li><a href={`${hashPrefix}#galerie`} class="hover:text-white transition-colors">Galerie</a></li>
+          <li><a href={`${hashPrefix}#vybaveni`} class="hover:text-white transition-colors">Vybavení</a></li>
           <li><a href="/cenik" class="hover:text-white transition-colors">Ceník</a></li>
-          <li><a href="#lokalita" class="hover:text-white transition-colors">Lokalita</a></li>
-          <li><a href="#kontakt" class="hover:text-white transition-colors">Kontakt</a></li>
+          <li><a href={`${hashPrefix}#lokalita`} class="hover:text-white transition-colors">Lokalita</a></li>
+          <li><a href={`${hashPrefix}#kontakt`} class="hover:text-white transition-colors">Kontakt</a></li>
         </ul>
       </div>
 
