@@ -61,7 +61,60 @@
   }
 
   .header-solid {
-    @apply bg-sand-100/95 backdrop-blur-sm shadow-sm;
+    @apply bg-sand-100 backdrop-blur-md shadow-sm;
+  }
+
+  /* Header text color transitions based on header state */
+  .header-transparent .nav-link {
+    @apply text-white;
+  }
+
+  .header-transparent .nav-link:hover {
+    @apply text-sand-200;
+  }
+
+  .header-solid .nav-link {
+    @apply text-charcoal-700;
+  }
+
+  .header-solid .nav-link:hover {
+    @apply text-moss-600;
+  }
+
+  /* CTA button state change */
+  .header-transparent .header-cta {
+    @apply bg-moss-600 text-white hover:bg-moss-700;
+  }
+
+  .header-solid .header-cta {
+    @apply bg-transparent text-wood-700 border-2 border-wood-600 hover:bg-wood-600 hover:text-white;
+  }
+
+  /* Mobile menu - fixed colors independent of header state */
+  #mobile-menu .nav-link {
+    @apply text-charcoal-700;
+  }
+
+  #mobile-menu .nav-link:hover {
+    @apply text-moss-600 bg-sand-100;
+  }
+
+  #mobile-menu .nav-link:focus {
+    @apply outline-2 outline-offset-2 outline-moss-600;
+  }
+
+  /* Ensure mobile menu always has solid background - high specificity */
+  #mobile-menu,
+  #mobile-menu.mobile-menu-open,
+  #mobile-menu.mobile-menu-closed {
+    background-color: #faf8f5 !important;
+    opacity: 1 !important;
+    isolation: isolate;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    /* Force GPU acceleration without interfering with transform animation */
+    will-change: transform;
+    backface-visibility: hidden;
   }
 }
 

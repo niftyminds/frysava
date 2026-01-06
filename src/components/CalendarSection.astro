@@ -57,16 +57,16 @@ while (days.length < 42) {
       <!-- Měsíční kalendář -->
       <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-sand-200">
         <!-- Header s názvem měsíce -->
-        <div class="bg-moss-600 text-white px-6 py-4 flex items-center justify-between">
-          <button class="p-2 hover:bg-moss-700 rounded-lg transition-colors opacity-50 cursor-not-allowed" disabled>
+        <div class="bg-moss-600 text-white px-4 sm:px-6 py-4 flex items-center justify-between">
+          <button class="p-2.5 hover:bg-moss-700 rounded-lg transition-colors opacity-50 cursor-not-allowed" disabled>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
           </button>
-          <h3 class="text-xl font-semibold">
+          <h3 class="text-lg sm:text-xl font-semibold text-white">
             {monthNames[currentMonth]} {currentYear}
           </h3>
-          <button class="p-2 hover:bg-moss-700 rounded-lg transition-colors opacity-50 cursor-not-allowed" disabled>
+          <button class="p-2.5 hover:bg-moss-700 rounded-lg transition-colors opacity-50 cursor-not-allowed" disabled>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
@@ -91,7 +91,7 @@ while (days.length < 42) {
             return (
               <div
                 class={`
-                  aspect-square flex items-center justify-center border-b border-r border-sand-100
+                  aspect-square min-h-[44px] flex items-center justify-center border-b border-r border-sand-100
                   ${day === null ? 'bg-sand-50/50' : 'bg-white hover:bg-sand-50 cursor-pointer'}
                   ${isWeekend && day !== null ? 'bg-sand-50' : ''}
                   ${isToday ? 'ring-2 ring-inset ring-moss-500' : ''}
@@ -100,7 +100,7 @@ while (days.length < 42) {
               >
                 {day !== null && (
                   <span class={`
-                    text-sm font-medium
+                    text-sm md:text-base font-medium
                     ${isToday ? 'text-moss-700 font-bold' : ''}
                     ${isWeekend && !isToday ? 'text-wood-600' : 'text-charcoal-700'}
                   `}>

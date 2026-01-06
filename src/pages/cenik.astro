@@ -3,32 +3,42 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import PricingSection from '../components/PricingSection.astro';
 import CalendarSection from '../components/CalendarSection.astro';
+import ContactForm from '../components/ContactForm.astro';
 import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout title="Ceník - Chalupa na Fryšavě">
-  <Header />
-  <main class="pt-20">
+  <Header variant="dark" />
+
+  <!-- Hero Section with Background Image -->
+  <section class="relative h-[400px] md:h-[500px] overflow-hidden">
+    <img
+      src="/images/large/chalupa-frysava-pod-zakovou-horou-8dac-570472.webp"
+      alt="Chalupa na Fryšavě"
+      class="w-full h-full object-cover"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50"></div>
+
+    <!-- Content Overlay -->
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="container mx-auto px-4 text-center">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium mb-4 text-white drop-shadow-lg">
+          Ceník
+        </h1>
+        <p class="text-base sm:text-lg md:text-xl mb-6 max-w-2xl mx-auto text-white/90 drop-shadow-md font-light">
+          Projděte si jednoduchý a přehledný ceník ubytovaní.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <main>
     <PricingSection />
     <CalendarSection />
 
-    <!-- CTA Section -->
-    <section class="section bg-moss-50">
-      <div class="container text-center">
-        <h2 class="mb-6">Máte zájem o pobyt?</h2>
-        <p class="text-lg text-charcoal-700 mb-8 max-w-2xl mx-auto">
-          Rezervujte si termín nebo nás kontaktujte pro více informací
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/rezervace" class="btn-primary text-lg px-10 py-5">
-            Rezervovat termín
-          </a>
-          <a href="/#kontakt" class="btn-secondary text-lg px-10 py-5">
-            Kontaktovat
-          </a>
-        </div>
-      </div>
-    </section>
+    <!-- Contact Form Section -->
+    <ContactForm />
   </main>
   <Footer />
 </BaseLayout>

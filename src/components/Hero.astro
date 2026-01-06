@@ -6,23 +6,30 @@ import path from 'path';
 const siteDataPath = path.join(process.cwd(), 'src/data/site.yaml');
 const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
 
-const carouselImages = [
-  '/images/large/chalupa-frysava-pod-zakovou-horou-8dac-570472.webp',
-  '/images/large/exterier-chalupy-c9c9-570474.webp',
-  '/images/large/zima-na-vysocine-9ca3-570470.webp',
-  '/images/large/zima-na-vysocine-044d-570471.webp',
-];
+const carouselImages = siteData.hero_images || [];
+const heroSlogan = siteData.hero_slogan || "Tady chci zpomalit a být";
 ---
 
-<section id="uvod" class="relative h-screen min-h-[600px] overflow-hidden">
-  <!-- Carousel Container -->
-  <div class="embla h-full" data-embla>
+<section id="uvod" class="relative md:h-screen md:min-h-[600px] overflow-hidden">
+  <!-- Mobile Static Image -->
+  <div class="md:hidden relative">
+    <img
+      src={carouselImages[0]?.path}
+      alt={carouselImages[0]?.alt || "Chalupa na Fryšavě"}
+      class="w-full h-auto"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50"></div>
+  </div>
+
+  <!-- Desktop Carousel Container -->
+  <div class="hidden md:block embla h-full" data-embla>
     <div class="embla__container h-full">
       {carouselImages.map((image, index) => (
         <div class="embla__slide relative h-full">
           <img
-            src={image}
-            alt={`Chalupa na Fryšavě ${index + 1}`}
+            src={image.path}
+            alt={image.alt || `Chalupa na Fryšavě ${index + 1}`}
             class="w-full h-full object-cover"
             loading={index === 0 ? 'eager' : 'lazy'}
           />
@@ -35,21 +42,21 @@ const carouselImages = [
   <!-- Content Overlay -->
   <div class="absolute inset-0 z-10 flex items-center justify-center">
     <div class="container mx-auto px-4 text-center">
-      <h1 class="text-5xl md:text-6xl lg:text-7xl font-medium mb-6 text-white drop-shadow-lg">
+      <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-medium mb-4 md:mb-6 text-white drop-shadow-lg">
         {siteData.name}
       </h1>
-      <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto text-white/90 drop-shadow-md font-light tracking-wide">
-        Tady chci zpomalit a být
+      <p class="text-base sm:text-lg md:text-2xl mb-6 md:mb-10 max-w-2xl mx-auto text-white/90 drop-shadow-md font-light tracking-wide">
+        {heroSlogan}
       </p>
 
       <!-- CTA Buttons -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="#kontakt" class="btn-primary text-lg px-10 py-4 inline-block">
+      <div class="flex flex-row gap-3 md:gap-4 justify-center items-center">
+        <a href="#kontakt" class="btn-primary text-sm sm:text-base md:text-lg px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-4 inline-block">
           Poptat termín
         </a>
         <a
           href="#o-chalupe"
-          class="inline-block px-10 py-4 text-lg font-medium text-white border-2 border-white/80 hover:bg-white/10 hover:border-white transition-all duration-200 rounded-lg"
+          class="hidden sm:inline-block px-6 md:px-10 py-3 md:py-4 text-base md:text-lg font-medium text-white border-2 border-white/80 hover:bg-white/10 hover:border-white transition-all duration-200 rounded-lg"
         >
           Více informací
         </a>
@@ -58,13 +65,15 @@ const carouselImages = [
   </div>
 
   <!-- Carousel Navigation Dots -->
-  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex gap-3" id="carousel-dots">
+  <div class="hidden md:flex absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 gap-1" id="carousel-dots">
     {carouselImages.map((_, index) => (
       <button
-        class="carousel-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-300"
+        class="carousel-dot flex items-center justify-center w-11 h-11 rounded-full hover:bg-white/10 transition-all duration-300"
         data-index={index}
         aria-label={`Přejít na obrázek ${index + 1}`}
-      ></button>
+      >
+        <span class="block w-2.5 h-2.5 rounded-full bg-white/40"></span>
+      </button>
     ))}
   </div>
 </section>
@@ -93,8 +102,12 @@ const carouselImages = [
   }
 
   /* Carousel dots active state */
-  .carousel-dot.is-active {
-    @apply bg-white w-8 scale-100;
+  .carousel-dot.is-active span {
+    @apply bg-white w-8;
+  }
+
+  .carousel-dot span {
+    transition: all 0.3s ease;
   }
 </style>
 

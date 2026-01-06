@@ -1,25 +1,11 @@
 ---
-const slides = [
-  {
-    id: 1,
-    text: "Naše chalupa je prastará. Údajně zde byla vyrobena jedna z prvních lyží pod Žákovou horou. Věřte ale vesnickým povídačkám... Zamilovali jsme si to místo a postupně ho zrekonstruovali ve velkolepý prostor pro milovníky výletů, bicyklů, pusy plné borůvek, zimní stopy, pikniku na pasece a Vysočiny...",
-    image: "/images/large/chalupa-frysava-pod-zakovou-horou-8dac-570472.webp",
-    imageAlt: "Chalupa na Fryšavě pod Žákovou horou"
-  },
-  {
-    id: 2,
-    text: "Chalupa jako u babičky. Původní citlivě zkombinované s novým, komfortní, funkční a půvabné. Podkroví s výměrou téměř 90m² je jako taneční sál, který vás večer obejme a družnou nocí po boku kamarádů přenese do dalšího prázdninového rána. Pro děti tu máme vyvýšenou galerii - expediční stan, dům na stromě, observatoř i nedobytnou letadlovou loď všech dětských her a snů.",
-    image: "/images/large/pokoj-v-pro-8-osob-8993-570485.webp",
-    imageAlt: "Interiér chalupy - podkroví pro 8 osob"
-  },
-  {
-    id: 3,
-    text: "Umístění chalupy nemůže být lepší. Z okna večer vidíte nasvícený kostel, ráno vás budí ptáci, do obchodu je to pět minut pěšky. Rybník Brádelák je za domem, bajkeři a lyžaři startují do svých tras hned za chalupou. S pusou modrou od borůvek si užíváte ten prázdninový pocit.",
-    image: "/images/large/frysava-pod-zakovou-horou-a848-570475.webp",
-    imageAlt: "Pohled na Fryšavu pod Žákovou horou"
-  }
-];
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
 
+const aboutDataPath = path.join(process.cwd(), 'src/data/about.yaml');
+const aboutData = yaml.load(fs.readFileSync(aboutDataPath, 'utf8'));
+const slides = aboutData.about_slides;
 const totalSlides = slides.length;
 ---
 
@@ -61,11 +47,8 @@ const totalSlides = slides.length;
                 <article class={`story-slide grid md:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-center ${index % 2 === 1 ? 'story-slide--reversed' : ''}`}>
 
                   <!-- Text Content -->
-                  <div class={`story-slide__content md:col-span-5 ${index % 2 === 1 ? 'md:col-start-8' : 'md:col-start-1'}`}>
-                    <div class="story-slide__ornament mb-6">
-                      <span class="block w-12 h-px bg-moss-400"></span>
-                    </div>
-                    <p class="story-slide__text text-xl md:text-2xl lg:text-[26px] leading-[1.85] font-serif italic text-charcoal-800">
+                  <div class={`story-slide__content md:col-span-5 ${index % 2 === 1 ? 'md:col-start-8' : 'md:col-start-1'} flex flex-col justify-center`}>
+                    <p class="story-slide__text text-lg md:text-xl lg:text-2xl leading-relaxed md:leading-relaxed lg:leading-[1.76] font-serif italic text-charcoal-800">
                       {slide.text}
                     </p>
                   </div>
@@ -187,17 +170,6 @@ const totalSlides = slides.length;
     transform: scale(1.02);
   }
 
-  /* Ornament animation */
-  .story-slide__ornament span {
-    @apply transition-all duration-500 ease-out;
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-
-  .embla__slide.is-active .story-slide__ornament span {
-    transform: scaleX(1);
-  }
-
   /* Screen reader only utility */
   .sr-only {
     @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
@@ -208,7 +180,6 @@ const totalSlides = slides.length;
   @media (prefers-reduced-motion: reduce) {
     .story-slide__content,
     .story-slide__image-wrapper,
-    .story-slide__ornament span,
     .story-progress__line-active {
       transition: none;
       transform: none;

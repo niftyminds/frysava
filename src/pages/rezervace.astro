@@ -2,20 +2,45 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
+
+const pricingDataPath = path.join(process.cwd(), 'src/data/pricing.yaml');
+const pricingData = yaml.load(fs.readFileSync(pricingDataPath, 'utf8'));
+
+const checkinTime = pricingData.checkin_checkout?.checkin_from || '15:00';
+const checkoutTime = pricingData.checkin_checkout?.checkout_until || '10:00';
+const depositPercent = pricingData.payment?.deposit_percent || 50;
 ---
 
 <BaseLayout title="Rezervace - Chalupa na Fryšavě">
-  <Header />
-  <main class="pt-20">
-    <!-- Hero Section -->
-    <section class="section bg-gradient-to-br from-sand-50 to-moss-50">
-      <div class="container text-center">
-        <h1 class="mb-6">Rezervace</h1>
-        <p class="text-lg text-charcoal-700 mb-8 max-w-2xl mx-auto">
+  <Header variant="dark" />
+
+  <!-- Hero Section with Background Image -->
+  <section class="relative h-[400px] md:h-[500px] overflow-hidden">
+    <img
+      src="/images/large/exterier-chalupy-c9c9-570474.webp"
+      alt="Chalupa na Fryšavě"
+      class="w-full h-full object-cover"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50"></div>
+
+    <!-- Content Overlay -->
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="container mx-auto px-4 text-center">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium mb-4 text-white drop-shadow-lg">
+          Rezervace
+        </h1>
+        <p class="text-base sm:text-lg md:text-xl mb-6 max-w-2xl mx-auto text-white/90 drop-shadow-md font-light">
           Vyberte si termín a rezervujte si pobyt v naší chalupě
         </p>
       </div>
-    </section>
+    </div>
+  </section>
+
+  <main>
 
     <!-- Previo Booking Widget -->
     <section class="section bg-white">
@@ -90,7 +115,7 @@ import Footer from '../components/Footer.astro';
                 </svg>
                 <div>
                   <h3 class="font-semibold text-wood-900 mb-1">Check-in</h3>
-                  <p class="text-sm text-charcoal-700">Od 15:00 hodin</p>
+                  <p class="text-sm text-charcoal-700">Od {checkinTime} hodin</p>
                 </div>
               </div>
             </div>
@@ -102,7 +127,7 @@ import Footer from '../components/Footer.astro';
                 </svg>
                 <div>
                   <h3 class="font-semibold text-wood-900 mb-1">Check-out</h3>
-                  <p class="text-sm text-charcoal-700">Do 10:00 hodin</p>
+                  <p class="text-sm text-charcoal-700">Do {checkoutTime} hodin</p>
                 </div>
               </div>
             </div>
@@ -114,7 +139,7 @@ import Footer from '../components/Footer.astro';
                 </svg>
                 <div>
                   <h3 class="font-semibold text-wood-900 mb-1">Záloha</h3>
-                  <p class="text-sm text-charcoal-700">30% z celkové ceny</p>
+                  <p class="text-sm text-charcoal-700">{depositPercent}% z celkové ceny</p>
                 </div>
               </div>
             </div>

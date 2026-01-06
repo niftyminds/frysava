@@ -8,6 +8,19 @@ const faqCollection = defineCollection({
   }),
 });
 
+const galleryCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    image: z.string(),
+    category: z.enum(['exterior', 'interior', 'surroundings', 'activities']),
+    order: z.number().default(0),
+    published: z.boolean().default(true),
+  }),
+});
+
 export const collections = {
   'faq': faqCollection,
+  'gallery': galleryCollection,
 };
