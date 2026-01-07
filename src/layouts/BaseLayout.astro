@@ -49,20 +49,33 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <SEO />
 
     <!-- Netlify Identity Widget -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body class="min-h-screen flex flex-col">
     <slot />
     <CookieConsent />
 
     <!-- Netlify Identity redirect script -->
-    <script>
+    <script is:inline>
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {
           if (!user) {
             window.netlifyIdentity.on("login", () => {
               document.location.href = "/admin/";
             });
+          }
+        });
+      }
+    </script>
+
+    <!-- Auto-open widget for invite/recovery tokens -->
+    <script is:inline>
+      if (window.netlifyIdentity) {
+        // Automatically open the modal if there's an invite or recovery token in the URL
+        window.netlifyIdentity.on("init", user => {
+          // Check for invite token or recovery token in URL hash
+          if (window.location.hash && (window.location.hash.includes("invite_token") || window.location.hash.includes("recovery_token"))) {
+            window.netlifyIdentity.open();
           }
         });
       }
