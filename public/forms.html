@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Netlify Forms Detection</title>
+</head>
+<body>
+  <!-- Hidden form for Netlify Forms detection -->
+  <!-- This file ensures Netlify detects the form at build time -->
+
+  <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="contact" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="tel" name="phone" />
+    <input type="date" name="dateFrom" />
+    <input type="date" name="dateTo" />
+    <input type="number" name="adults" />
+    <input type="number" name="children" />
+    <select name="pets">
+      <option value="ne">Ne</option>
+      <option value="ano">Ano</option>
+      <option value="vice">Více</option>
+    </select>
+    <textarea name="message"></textarea>
+    <input type="checkbox" name="gdpr" />
+    <input type="text" name="bot-field" />
+  </form>
+
+  <p>This page is used for Netlify Forms detection only.</p>
+</body>
+</html>
