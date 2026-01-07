@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Děkujeme za zprávu - Chalupa na Fryšavě">
+  <Header variant="light" />
+
+  <main class="pt-20">
+    <section class="section bg-gradient-to-br from-sand-50 to-moss-50">
+      <div class="container">
+        <div class="max-w-2xl mx-auto text-center">
+          <!-- Success Icon -->
+          <div class="mb-8">
+            <div class="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full">
+              <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+          </div>
+
+          <h1 class="mb-6">Děkujeme za vaši zprávu!</h1>
+
+          <p class="text-lg text-charcoal-700 mb-8">
+            Vaše poptávka byla úspěšně odeslána. Budeme vás kontaktovat co nejdříve.
+          </p>
+
+          <div class="bg-white rounded-xl shadow-sm border border-sand-200 p-8 mb-8">
+            <h2 class="text-xl font-semibold text-wood-900 mb-4">Co se stane dál?</h2>
+            <ul class="text-left space-y-3 text-charcoal-700">
+              <li class="flex items-start gap-3">
+                <svg class="w-6 h-6 text-moss-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>Obdrželi jsme vaši poptávku a zpracováváme ji</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-6 h-6 text-moss-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>Odpovíme vám do 24 hodin</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-6 h-6 text-moss-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>Pokud máte dotazy, neváhejte nás kontaktovat telefonicky</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/" class="btn-primary">
+              Zpět na hlavní stránku
+            </a>
+            <a href="/cenik" class="btn-secondary">
+              Zobrazit ceník
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

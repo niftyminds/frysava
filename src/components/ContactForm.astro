@@ -76,6 +76,7 @@ const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
         <form
           name="contact"
           method="POST"
+          action="/success"
           data-netlify="true"
           data-netlify-honeypot="bot-field"
           class="space-y-6"
@@ -274,8 +275,8 @@ const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
       // Get form data
       const formData = new FormData(form);
 
-      // Submit to Netlify
-      const response = await fetch('/', {
+      // Submit to Netlify Forms (current page URL to preserve Netlify detection)
+      const response = await fetch(window.location.pathname, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(formData as any).toString()
