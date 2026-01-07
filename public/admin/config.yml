@@ -2,8 +2,8 @@ backend:
   name: git-gateway
   branch: main
 
-# Pro lokální vývoj s reálnými daty
-local_backend: true
+# Pro lokální vývoj s reálnými daty (pouze při použití npx netlify-cms-proxy-server)
+# local_backend: true
 
 media_folder: "public/images/original"
 public_folder: "/images/original"
