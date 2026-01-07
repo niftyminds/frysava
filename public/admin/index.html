@@ -5,22 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
   <title>Správa obsahu - Chalupa na Fryšavě</title>
+
+  <!-- CMS Config -->
   <link href="config.yml" type="text/yaml" rel="cms-config-url">
-  <!-- Netlify Identity Widget -->
+
+  <!-- CRITICAL: Set site URL BEFORE loading Identity widget -->
+  <script>
+    // This global variable tells the widget which Netlify site to use
+    window.netlifyIdentitySiteURL = "https://frysava.netlify.app";
+  </script>
+
+  <!-- Netlify Identity Widget - will use the site URL set above -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   <!-- Decap CMS with Netlify Git Gateway -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
-  <!-- Initialize Netlify Identity with correct site URL -->
+  <!-- Redirect after successful login -->
   <script>
     if (window.netlifyIdentity) {
-      // CRITICAL: Point to the Netlify site for Identity/Git Gateway
-      window.netlifyIdentity.init({
-        APIUrl: "https://frysava.netlify.app/.netlify/identity"
-      });
-
       window.netlifyIdentity.on("init", user => {
         if (!user) {
           window.netlifyIdentity.on("login", () => {
