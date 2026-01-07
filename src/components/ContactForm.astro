@@ -5,9 +5,6 @@ import path from 'path';
 
 const siteDataPath = path.join(process.cwd(), 'src/data/site.yaml');
 const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
-
-// TODO: V budoucnu nahradit skutečným Formspree endpoint
-const formspreeEndpoint = "https://formspree.io/f/YOUR_FORM_ID"; // PLACEHOLDER
 ---
 
 <section id="kontakt" class="section bg-white">
@@ -77,11 +74,22 @@ const formspreeEndpoint = "https://formspree.io/f/YOUR_FORM_ID"; // PLACEHOLDER
       <!-- Contact Form -->
       <div>
         <form
-          action={formspreeEndpoint}
+          name="contact"
           method="POST"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
           class="space-y-6"
           id="contact-form"
         >
+          <!-- Hidden fields for Netlify Forms -->
+          <input type="hidden" name="form-name" value="contact" />
+
+          <!-- Honeypot spam protection (hidden from users) -->
+          <p class="hidden">
+            <label>
+              Nevyplňujte toto pole pokud jste člověk: <input name="bot-field" />
+            </label>
+          </p>
           <div>
             <label for="name" class="block text-sm font-medium text-charcoal-700 mb-2">
               Jméno a příjmení *
@@ -243,13 +251,68 @@ const formspreeEndpoint = "https://formspree.io/f/YOUR_FORM_ID"; // PLACEHOLDER
 </section>
 
 <script>
-  // Form submission handling (placeholder - will work with Formspree)
+  // Netlify Forms AJAX submission with success/error notifications
   const form = document.getElementById('contact-form');
   const successMsg = document.getElementById('form-success');
   const errorMsg = document.getElementById('form-error');
+  const submitBtn = form?.querySelector('button[type="submit"]');
 
   form?.addEventListener('submit', async (e) => {
-    // Note: This is a basic placeholder. Formspree handles the actual submission.
-    // When Formspree is configured, it will redirect or show its own success message.
+    e.preventDefault();
+
+    // Disable submit button and show loading state
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Odesílám...';
+    }
+
+    // Hide previous messages
+    successMsg?.classList.add('hidden');
+    errorMsg?.classList.add('hidden');
+
+    try {
+      // Get form data
+      const formData = new FormData(form);
+
+      // Submit to Netlify
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as any).toString()
+      });
+
+      if (response.ok) {
+        // Show success message
+        successMsg?.classList.remove('hidden');
+
+        // Smooth scroll to success message
+        successMsg?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        // Reset form
+        form.reset();
+
+        // Re-enable button
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Odeslat poptávku';
+        }
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      // Show error message
+      errorMsg?.classList.remove('hidden');
+
+      // Smooth scroll to error message
+      errorMsg?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      // Re-enable button
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Odeslat poptávku';
+      }
+
+      console.error('Form submission error:', error);
+    }
   });
 </script>
