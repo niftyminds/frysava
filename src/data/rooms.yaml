@@ -91,10 +91,10 @@ featured_section:
   image_alt: Galerie v podkroví - prostor pro děti
 cta:
   title: Máte zájem o ubytování?
-  description: Kontaktujte nás a domluvíme termín, který vám vyhovuje.
+  description: Vyberte si termín a rezervujte online nebo nás kontaktujte.
   buttons:
-    - text: Poptat termín
-      link: /#kontakt
+    - text: Rezervovat termín
+      link: /rezervace
       style: primary
     - text: Zobrazit ceník
       link: /cenik
