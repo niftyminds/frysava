@@ -46,39 +46,9 @@ const depositPercent = pricingData.payment?.deposit_percent || 50;
     <section class="section bg-white">
       <div class="container">
         <div class="max-w-5xl mx-auto">
-          <!-- Previo iframe placeholder -->
-          <div class="bg-sand-50 border-2 border-sand-300 rounded-xl p-12 text-center min-h-[600px] flex flex-col items-center justify-center">
-            <svg class="w-16 h-16 text-moss-600 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-            </svg>
-            <h3 class="text-2xl font-semibold text-wood-900 mb-4">Online rezervační systém</h3>
-            <p class="text-charcoal-700 mb-6 max-w-md">
-              Zde bude umístěn rezervační widget ze systému Previo.<br/>
-              Vložte váš Previo embed kód níže.
-            </p>
-
-            <!-- Placeholder for Previo embed code -->
-            <div class="bg-white border-2 border-dashed border-moss-300 rounded-lg p-6 max-w-md w-full">
-              <p class="text-sm text-charcoal-600 font-mono">
-                &lt;!-- Vložte zde Previo iframe --&gt;<br/>
-                &lt;iframe src="https://..."&gt;&lt;/iframe&gt;
-              </p>
-            </div>
-
-            <div class="mt-8">
-              <p class="text-sm text-charcoal-600 mb-4">Zatím nemáte Previo účet?</p>
-              <a
-                href="https://www.previo.cz/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 text-moss-600 hover:text-moss-700 font-medium"
-              >
-                Zjistit více o Previo
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                </svg>
-              </a>
-            </div>
+          <!-- Previo Booking Engine -->
+          <div class="bg-white rounded-xl shadow-sm border border-sand-200 p-4 md:p-8 min-h-[600px]">
+            <div id="previo-booking-engine"></div>
           </div>
 
           <!-- Alternative contact info -->
@@ -167,4 +137,16 @@ const depositPercent = pricingData.payment?.deposit_percent || 50;
     </section>
   </main>
   <Footer />
+
+  <!-- Previo Booking Engine Script -->
+  <script is:inline>
+    var bookingEngineConfig = {
+      id: '019b97f7-0310-7318-ace4-f196a69a1b1b',
+      lang: 'cs',
+      currency: 'CZK'
+    };
+    var a = document.createElement('script');
+    a.src = 'https://booking.previo.app/loader/';
+    document.head.appendChild(a);
+  </script>
 </BaseLayout>
