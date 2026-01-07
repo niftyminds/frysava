@@ -1,6 +1,9 @@
 backend:
   name: git-gateway
   branch: main
+  # CRITICAL: Tell Decap CMS to use Netlify site for Git Gateway
+  base_url: https://frysava.netlify.app
+  auth_endpoint: /.netlify/identity
 
 # Pro lokální vývoj s reálnými daty
 # local_backend: true
