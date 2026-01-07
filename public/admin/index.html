@@ -13,9 +13,14 @@
   <!-- Decap CMS with Netlify Git Gateway -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
-  <!-- Auto-open Identity modal on page load if not logged in -->
+  <!-- Initialize Netlify Identity with correct site URL -->
   <script>
     if (window.netlifyIdentity) {
+      // CRITICAL: Point to the Netlify site for Identity/Git Gateway
+      window.netlifyIdentity.init({
+        APIUrl: "https://frysava.netlify.app/.netlify/identity"
+      });
+
       window.netlifyIdentity.on("init", user => {
         if (!user) {
           window.netlifyIdentity.on("login", () => {
