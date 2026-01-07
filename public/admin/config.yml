@@ -1,8 +1,11 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: niftyminds/frysava
   branch: main
+  base_url: https://sveltia-cms-auth.deno.dev
+  auth_endpoint: /auth/github
 
-# Pro lokální vývoj s reálnými daty (pouze při použití npx netlify-cms-proxy-server)
+# Pro lokální vývoj s reálnými daty
 # local_backend: true
 
 media_folder: "public/images/original"

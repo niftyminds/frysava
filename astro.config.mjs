@@ -1,13 +1,16 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
-import netlify from '@astrojs/netlify';
+import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://chalupa-frysava.netlify.app', // Aktualizujte s vaší doménou
+  site: 'https://frysava.cz', // Production domain
   output: 'static',
-  adapter: netlify(),
+  adapter: vercel({
+    webAnalytics: { enabled: true }, // Vercel Web Analytics
+    imageService: true,              // Vercel Image Optimization
+  }),
   integrations: [
     tailwind(),
     sitemap()
