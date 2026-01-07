@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Potvrzení změny e-mailu - Chalupa na Fryšavě</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f0e8; color: #3a3a3a;">
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f5f0e8;">
+    <tr>
+      <td style="padding: 40px 20px;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
+          <!-- Header s obrázkem -->
+          <tr>
+            <td style="background: linear-gradient(135deg, #6b8f71 0%, #4a6b50 100%); padding: 40px 30px; text-align: center;">
+              <h1 style="margin: 0; font-size: 32px; font-weight: 600; color: #ffffff; font-family: Georgia, 'Times New Roman', serif; letter-spacing: -0.5px;">
+                Chalupa na Fryšavě
+              </h1>
+              <p style="margin: 8px 0 0; font-size: 14px; color: rgba(255, 255, 255, 0.9); font-weight: 400;">
+                Ubytování na Vysočině
+              </p>
+            </td>
+          </tr>
+
+          <!-- Obsah -->
+          <tr>
+            <td style="padding: 50px 30px;">
+              <!-- Ikona e-mailu -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td style="text-align: center; padding-bottom: 30px;">
+                    <div style="display: inline-block; width: 64px; height: 64px; background-color: #c7d7cb; border-radius: 50%; line-height: 64px; font-size: 28px;">
+                      ✉️
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <h2 style="margin: 0 0 20px; font-size: 24px; font-weight: 600; color: #2d221a; font-family: Georgia, 'Times New Roman', serif; text-align: center;">
+                Potvrďte změnu e-mailové adresy
+              </h2>
+
+              <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6; color: #4a4a4a;">
+                Dobrý den,
+              </p>
+
+              <p style="margin: 0 0 30px; font-size: 16px; line-height: 1.6; color: #4a4a4a;">
+                Obdrželi jsme požadavek na změnu e-mailové adresy vašeho účtu. Pro dokončení změny na novou adresu <strong>{{ .Email }}</strong> je potřeba potvrdit, že tato adresa patří vám.
+              </p>
+
+              <p style="margin: 0 0 30px; font-size: 16px; line-height: 1.6; color: #4a4a4a;">
+                Klikněte na tlačítko níže pro potvrzení změny:
+              </p>
+
+              <!-- CTA Tlačítko -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td style="text-align: center; padding: 10px 0 30px;">
+                    <a href="{{ .ConfirmationURL }}" style="display: inline-block; padding: 16px 40px; background-color: #4a6b50; color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 2px 4px rgba(74, 107, 80, 0.3);">
+                      Potvrdit nový e-mail
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin: 0 0 10px; font-size: 14px; line-height: 1.6; color: #666666;">
+                Pokud tlačítko nefunguje, zkopírujte a vložte následující odkaz do prohlížeče:
+              </p>
+
+              <p style="margin: 0 0 30px; font-size: 13px; line-height: 1.6; color: #4a6b50; word-break: break-all; background-color: #f3f6f4; padding: 12px 16px; border-radius: 6px; border-left: 3px solid #4a6b50;">
+                {{ .ConfirmationURL }}
+              </p>
+
+              <div style="background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 16px 20px; border-radius: 6px; margin-top: 30px;">
+                <p style="margin: 0 0 8px; font-size: 14px; line-height: 1.6; color: #1e40af; font-weight: 600;">
+                  ℹ️ Co se stane po potvrzení?
+                </p>
+                <ul style="margin: 8px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: #1e3a8a;">
+                  <li style="margin-bottom: 4px;">Vaše původní e-mailová adresa bude nahrazena novou</li>
+                  <li style="margin-bottom: 4px;">Budete se přihlašovat pomocí nové adresy</li>
+                  <li>Dostanete potvrzení na původní e-mail</li>
+                </ul>
+              </div>
+
+              <div style="background-color: #fef8e7; border-left: 4px solid #f0b429; padding: 16px 20px; border-radius: 6px; margin-top: 20px;">
+                <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #5c4a3d;">
+                  <strong>⚠️ Důležité:</strong> Pokud jste o změnu e-mailu nežádali, ignorujte prosím tento e-mail a okamžitě kontaktujte naši podporu.
+                </p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #faf8f5; padding: 30px; text-align: center; border-top: 1px solid #e8dfd0;">
+              <p style="margin: 0 0 8px; font-size: 14px; color: #666666;">
+                <strong>Chalupa na Fryšavě</strong>
+              </p>
+              <p style="margin: 0 0 15px; font-size: 13px; color: #818181; line-height: 1.5;">
+                Fryšava pod Žákovou horou 145<br>
+                592 56 Nové Veselí, Česká republika
+              </p>
+              <p style="margin: 0; font-size: 12px; color: #a4a4a4;">
+                © {{ now.Year }} Chalupa na Fryšavě. Všechna práva vyhrazena.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
