@@ -316,4 +316,44 @@ const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
       console.error('Form submission error:', error);
     }
   });
+
+  // GA4 Event Tracking Helper
+  function trackFormEvent(eventName, data) {
+    if (typeof gtag !== 'undefined') {
+      try {
+        var consent = localStorage.getItem('frysava_cookie_consent');
+        if (consent) {
+          var consentData = JSON.parse(consent);
+          if (consentData.accepted) {
+            gtag('event', eventName, data);
+            console.log('[Analytics] Event tracked:', eventName);
+          }
+        }
+      } catch (e) {
+        console.warn('[Analytics] Error tracking event:', e);
+      }
+    }
+  }
+
+  // Track form submission attempt
+  form?.addEventListener('submit', function() {
+    trackFormEvent('generate_lead', {
+      'event_category': 'contact',
+      'event_label': 'contact_form_submit',
+      'form_name': 'contact'
+    });
+  });
+
+  // Track phone/email clicks (optional)
+  document.querySelectorAll('a[href^="tel:"], a[href^="mailto:"]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var href = this.getAttribute('href');
+      var trackType = href.startsWith('tel:') ? 'phone' : 'email';
+      trackFormEvent('click', {
+        'event_category': 'contact',
+        'event_label': trackType + '_click',
+        'link_type': trackType
+      });
+    });
+  });
 </script>

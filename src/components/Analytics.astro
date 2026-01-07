@@ -1,0 +1,92 @@
+---
+/**
+ * Google Analytics 4 Component
+ *
+ * Implements GA4 with GDPR-compliant consent mode.
+ * Works in conjunction with CookieConsent.astro component.
+ *
+ * Features:
+ * - Consent Mode v2 (default denied until user accepts)
+ * - Anonymous IP (automatically enabled in GA4)
+ * - Development mode detection
+ * - Performance optimized (async loading)
+ */
+
+const GA_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const IS_DEV = import.meta.env.DEV;
+const DISABLE_IN_DEV = import.meta.env.PUBLIC_GA_DISABLE_DEV === 'true';
+
+// Don't render anything if no GA ID or if disabled in dev
+const shouldLoad = GA_ID && !(IS_DEV && DISABLE_IN_DEV);
+---
+
+{shouldLoad && (
+  <>
+    {/* Google Analytics 4 - Consent Mode Default */}
+    <script is:inline define:vars={{ GA_ID }}>
+      // Initialize dataLayer
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      // CRITICAL: Set default consent BEFORE loading gtag.js
+      // This ensures no cookies are set until user consents
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'wait_for_update': 500  // Wait 500ms for consent update
+      });
+
+      // Set region-specific defaults for EEA (European Economic Area)
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'region': ['CZ', 'AT', 'BE', 'BG', 'HR', 'CY', 'DK', 'EE', 'FI', 'FR',
+                   'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
+                   'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'IS', 'LI', 'NO', 'GB']
+      });
+
+      // Initialize gtag with timestamp
+      gtag('js', new Date());
+
+      // Configure GA4 with privacy-focused settings
+      gtag('config', GA_ID, {
+        'anonymize_ip': true,           // Deprecated but kept for older browsers
+        'send_page_view': true,         // Auto page view tracking
+        'cookie_flags': 'SameSite=Lax;Secure',
+        'cookie_domain': 'auto',
+        'cookie_expires': 63072000,     // 2 years in seconds
+        // Debug mode - set to true for debugging in GA4 DebugView
+        'debug_mode': false
+      });
+
+      // Make gtag globally available
+      window.gtag = gtag;
+    </script>
+
+    {/* Load Google Tag Manager script asynchronously */}
+    <script
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+    ></script>
+
+    {/* Resource hints for performance */}
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+  </>
+)}
+
+{/* Development mode indicator */}
+{IS_DEV && DISABLE_IN_DEV && (
+  <script is:inline>
+    console.log('[Analytics] GA4 disabled in development mode');
+    // Create stub gtag function for development
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function() {
+      console.log('[Analytics Dev]', arguments);
+      dataLayer.push(arguments);
+    };
+  </script>
+)}

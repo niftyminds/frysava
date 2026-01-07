@@ -152,21 +152,22 @@
 </style>
 
 <script>
-  // Cookie Consent Management
+  // Cookie Consent Management - Enhanced for GA4 Consent Mode v2
   (function() {
     var CONSENT_KEY = 'frysava_cookie_consent';
-    var CONSENT_VERSION = '1.0';
+    var CONSENT_VERSION = '1.1'; // Bumped version for Consent Mode v2
 
     // Check if consent was already given
-    function hasConsent() {
+    function getConsent() {
       var consent = localStorage.getItem(CONSENT_KEY);
-      if (!consent) return false;
+      if (!consent) return null;
 
       try {
         var data = JSON.parse(consent);
-        return data.version === CONSENT_VERSION && data.accepted === true;
+        if (data.version !== CONSENT_VERSION) return null; // Re-ask on version change
+        return data;
       } catch (e) {
-        return false;
+        return null;
       }
     }
 
@@ -180,33 +181,37 @@
       localStorage.setItem(CONSENT_KEY, JSON.stringify(data));
     }
 
-    // Initialize tracking scripts
-    function initializeTracking() {
-      // Initialize Google Analytics if available
-      if (typeof gtag !== 'undefined') {
-        gtag('consent', 'update', {
-          'analytics_storage': 'granted',
-          'ad_storage': 'granted'
-        });
+    // Update GA4 consent state
+    function updateGtagConsent(granted) {
+      if (typeof gtag === 'undefined') {
+        console.warn('[CookieConsent] gtag not available');
+        return;
       }
 
-      console.log('✅ Tracking initialized with user consent');
+      gtag('consent', 'update', {
+        'analytics_storage': granted ? 'granted' : 'denied',
+        'ad_storage': granted ? 'granted' : 'denied',
+        'ad_user_data': granted ? 'granted' : 'denied',
+        'ad_personalization': granted ? 'granted' : 'denied'
+      });
+
+      console.log('[CookieConsent] Consent updated:', granted ? 'granted' : 'denied');
+    }
+
+    // Initialize tracking scripts
+    function initializeTracking() {
+      updateGtagConsent(true);
 
       // Dispatch custom event for other scripts to listen to
-      window.dispatchEvent(new CustomEvent('trackingConsented'));
+      window.dispatchEvent(new CustomEvent('cookieConsentGranted'));
     }
 
     // Revoke tracking
     function revokeTracking() {
-      // Disable Google Analytics if available
-      if (typeof gtag !== 'undefined') {
-        gtag('consent', 'update', {
-          'analytics_storage': 'denied',
-          'ad_storage': 'denied'
-        });
-      }
+      updateGtagConsent(false);
 
-      console.log('❌ Tracking revoked by user');
+      // Dispatch custom event
+      window.dispatchEvent(new CustomEvent('cookieConsentRevoked'));
     }
 
     // Show cookie banner
@@ -214,7 +219,10 @@
       var banner = document.getElementById('cookie-consent-banner');
       if (!banner) return;
 
-      banner.style.display = 'block';
+      // Small delay to ensure page is rendered
+      setTimeout(function() {
+        banner.style.display = 'block';
+      }, 100);
 
       // Add event listeners
       var acceptBtn = document.getElementById('cookie-accept');
@@ -237,6 +245,24 @@
       }
     }
 
+    // Main initialization
+    function init() {
+      var consent = getConsent();
+
+      if (consent !== null) {
+        // User already made a choice
+        if (consent.accepted) {
+          initializeTracking();
+        } else {
+          revokeTracking();
+        }
+      } else {
+        // No consent yet - show banner
+        // Default consent is already 'denied' via Analytics component
+        showCookieBanner();
+      }
+    }
+
     // Initialize on page load
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', init);
@@ -244,22 +270,7 @@
       init();
     }
 
-    function init() {
-      if (hasConsent()) {
-        // User already gave consent
-        initializeTracking();
-      } else {
-        // Show cookie banner
-        showCookieBanner();
-
-        // Default: deny tracking until user accepts
-        if (typeof gtag !== 'undefined') {
-          gtag('consent', 'default', {
-            'analytics_storage': 'denied',
-            'ad_storage': 'denied'
-          });
-        }
-      }
-    }
+    // Re-initialize on Astro page navigation (if View Transitions enabled)
+    document.addEventListener('astro:page-load', init);
   })();
 </script>

@@ -64,4 +64,29 @@ import Footer from '../components/Footer.astro';
   </main>
 
   <Footer />
+
+  <!-- GA4 Conversion Tracking -->
+  <script is:inline>
+    // Fire conversion event on success page load
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof gtag !== 'undefined') {
+        try {
+          var consent = localStorage.getItem('frysava_cookie_consent');
+          if (consent) {
+            var consentData = JSON.parse(consent);
+            if (consentData.accepted) {
+              gtag('event', 'conversion', {
+                'event_category': 'lead',
+                'event_label': 'form_submission_success',
+                'send_to': 'G-E4GNK39Y48'
+              });
+              console.log('[Analytics] Conversion tracked');
+            }
+          }
+        } catch (e) {
+          console.warn('[Analytics] Error tracking conversion:', e);
+        }
+      }
+    });
+  </script>
 </BaseLayout>
