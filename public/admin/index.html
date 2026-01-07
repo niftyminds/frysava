@@ -5,9 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
   <title>Správa obsahu - Chalupa na Fryšavě</title>
+  <link href="config.yml" type="text/yaml" rel="cms-config-url">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   <!-- Include the script that builds the page and powers Netlify CMS -->
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+
+  <script>
+    // Netlify Identity Widget initialization
+    if (window.netlifyIdentity) {
+      // Open the login modal if user is not logged in
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          // User is not logged in, show login modal with "Forgot password?" link
+          window.netlifyIdentity.open();
+        }
+      });
+
+      // Close the modal after successful login
+      window.netlifyIdentity.on("login", () => {
+        window.netlifyIdentity.close();
+      });
+    }
+  </script>
 </body>
 </html>
