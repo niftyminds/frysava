@@ -1,13 +1,9 @@
 ---
 // File: /Users/michalpresse/Downloads/github-repo/Repositories/frysava/src/components/EquipmentSection.astro
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getFeaturesData, getSiteData } from '../lib/payload';
 
-const featuresDataPath = path.join(process.cwd(), 'src/data/features.yaml');
-const featuresData = yaml.load(fs.readFileSync(featuresDataPath, 'utf8'));
-const siteDataPath = path.join(process.cwd(), 'src/data/site.yaml');
-const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
+const featuresData = await getFeaturesData();
+const siteData = await getSiteData();
 
 // Icon SVG paths
 const iconMap = {

@@ -8,6 +8,19 @@ This branch (`vercel-migration`) contains code changes for migrating from Netlif
 - **This branch** is for Vercel testing only
 - DO NOT merge to main until migration is complete and tested
 
+## 🎯 Migration Strategy: Hybrid Architecture
+
+This migration uses a **hybrid approach**:
+- ✅ **Web hosting:** Moved to Vercel (faster, better CDN)
+- ✅ **CMS authentication:** Stays on Netlify (simple, FREE)
+- ✅ **No OAuth setup needed:** Netlify Identity + Git Gateway remain unchanged
+- ✅ **Total cost:** $0/month (both platforms on FREE tier)
+
+**Why hybrid?** This gives you the best of both worlds:
+- Vercel's superior hosting performance
+- Netlify's dead-simple CMS authentication (no GitHub OAuth complexity)
+- Both stay completely FREE
+
 ## Changes Made
 
 ### 1. Adapter Change
@@ -20,15 +33,16 @@ This branch (`vercel-migration`) contains code changes for migrating from Netlif
 - ✅ Added: Formspree integration
 - **ACTION REQUIRED:** Replace `YOUR_FORMSPREE_ID` in `src/components/ContactForm.astro`
 
-### 3. CMS Authentication
-- ❌ Removed: Netlify Identity + Git Gateway
-- ✅ Added: GitHub OAuth via Decap CMS
-- **ACTION REQUIRED:** Set up GitHub OAuth App (see below)
+### 3. CMS Authentication (Hybrid Setup)
+- ✅ **Kept:** Netlify Identity + Git Gateway (FREE on Netlify)
+- ✅ **Web hosting:** Moved to Vercel
+- 🎯 **Strategy:** Hybrid architecture - web on Vercel, CMS auth on Netlify
+- **NO ACTION REQUIRED:** Netlify Identity already configured
 
 ### 4. Configuration Files
 - Created `vercel.json` with headers and settings
-- Updated `public/admin/config.yml` for GitHub backend
-- Updated `public/admin/index.html` (removed Identity widget)
+- Kept `public/admin/config.yml` with git-gateway backend
+- Kept `public/admin/index.html` with Netlify Identity widget
 
 ## Required Setup Steps
 
@@ -42,54 +56,49 @@ This branch (`vercel-migration`) contains code changes for migrating from Netlif
    - `src/components/ContactForm.astro` (line 78)
    - `src/components/ContactForm.astro` (line 272)
 
-### Step 2: Create GitHub OAuth App
+### Step 2: Verify Netlify Site Configuration
 
-1. Go to https://github.com/settings/developers
-2. Click "New OAuth App"
-3. Fill in:
-   - **Application name:** Chalupa Frysava CMS
-   - **Homepage URL:** `https://frysava.cz`
-   - **Authorization callback URL:** `https://sveltia-cms-auth.deno.dev/callback`
-4. Click "Register application"
-5. Note your **Client ID** and **Client Secret**
+**Important:** Your existing Netlify site remains active for CMS authentication only (no hosting).
 
-### Step 3: Configure Sveltia CMS Auth
+1. Go to Netlify Dashboard: https://app.netlify.com
+2. Find your site: `frysava` (or similar)
+3. Verify these services are enabled:
+   - ✅ **Netlify Identity:** Enabled (Settings > Identity)
+   - ✅ **Git Gateway:** Enabled (Settings > Identity > Services > Git Gateway)
+   - ✅ **Email notifications:** Configured (invitation, password reset)
 
-1. Go to https://github.com/sveltia/sveltia-cms-auth
-2. Fork the repository (or use the hosted version)
-3. Deploy to Deno Deploy (free)
-4. Add environment variables:
-   - `GITHUB_CLIENT_ID`: Your OAuth App Client ID
-   - `GITHUB_CLIENT_SECRET`: Your OAuth App Client Secret
-   - `GITHUB_REPO`: `niftyminds/frysava`
+**Note:** Netlify FREE tier includes:
+- 1,000 Identity users/month
+- Unlimited Git Gateway usage
+- No need for active site deployment
 
-**Note:** The hosted version at `https://sveltia-cms-auth.deno.dev` is already configured in `public/admin/config.yml`. You just need to provide your GitHub OAuth credentials.
-
-### Step 4: Deploy to Vercel
+### Step 3: Deploy to Vercel
 
 1. Install Vercel CLI: `npm i -g vercel`
 2. Login: `vercel login`
 3. Deploy: `vercel` (from project root)
 4. You'll get a preview URL: `frysava-git-vercel-migration-xxx.vercel.app`
 
-### Step 5: Configure Vercel Environment Variables
+### Step 4: Configure Vercel Environment Variables
 
 In Vercel Dashboard > Project Settings > Environment Variables, add:
 
 ```
 PUBLIC_GA_MEASUREMENT_ID=G-E4GNK39Y48
 PUBLIC_GA_DISABLE_DEV=false
-GITHUB_CLIENT_ID=your_oauth_client_id
-GITHUB_CLIENT_SECRET=your_oauth_secret
 ```
 
-### Step 6: Add GitHub Repository Collaborators
+### Step 5: CMS User Management
 
-CMS users must have write access to the repository:
+CMS users are managed through **Netlify Identity** (not GitHub):
 
-1. Go to https://github.com/niftyminds/frysava/settings/access
-2. Invite collaborators (admin users)
-3. They must accept invitation
+1. Go to Netlify Dashboard > Identity
+2. Click "Invite users"
+3. Enter email addresses of CMS admins
+4. Users receive invitation email with password setup link
+5. After registration, users can access `/admin` on the Vercel-hosted site
+
+**No GitHub repository access needed** - Git Gateway handles commits automatically.
 
 ## Testing Checklist
 
@@ -157,22 +166,75 @@ Simply stay on `main` branch. Netlify continues running normally.
 
 ## Cost Comparison
 
-| Service | Netlify | Vercel | Change |
+| Service | Before (Netlify Only) | After (Hybrid) | Change |
 |---------|---------|--------|--------|
-| Hosting | Free | Free | $0 |
-| Forms | Free (100/mo) | Formspree Free (50/mo) | $0 |
-| Auth | Free | Free (GitHub) | $0 |
+| **Web Hosting** | Netlify Free | Vercel Free | $0 |
+| **Forms** | Netlify Forms (100/mo) | Formspree (50/mo) | $0 |
+| **CMS Auth** | Netlify Identity (1,000 users) | Netlify Identity (1,000 users) | $0 |
+| **Git Gateway** | Netlify (unlimited) | Netlify (unlimited) | $0 |
 | **Total** | **$0/mo** | **$0/mo** | **$0** |
 
-**Note:** Formspree Pro ($8/mo) if you need > 50 submissions/month
+**Notes:**
+- Netlify site remains for CMS auth only (no build/hosting costs)
+- Formspree Pro ($8/mo) only if you need > 50 submissions/month
+- Netlify Identity Pro ($99/mo) only if you need > 1,000 users/month
+
+## Architecture Overview
+
+### Hybrid Setup Explained
+
+This migration uses a **hybrid architecture** to leverage the best of both platforms:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     PUBLIC VISITORS                          │
+│                  (https://frysava.cz)                        │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+              ┌──────────────────────┐
+              │   VERCEL HOSTING     │
+              │  - Static pages      │
+              │  - Fast CDN          │
+              │  - Global edge       │
+              └──────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────┐
+│                      CMS ADMINS                              │
+│              (https://frysava.cz/admin)                      │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+              ┌──────────────────────┐
+              │  NETLIFY IDENTITY    │
+              │  - User auth         │
+              │  - Email invites     │
+              │  - Password reset    │
+              └──────────┬───────────┘
+                         │
+                         ▼
+              ┌──────────────────────┐
+              │   GIT GATEWAY        │
+              │  - GitHub commits    │
+              │  - Content saves     │
+              └──────────────────────┘
+```
+
+**Benefits:**
+- ✅ Vercel: Faster hosting, better performance
+- ✅ Netlify: Simple CMS auth (no OAuth setup needed)
+- ✅ FREE tier on both platforms
+- ✅ No code changes for CMS users
+- ✅ Easy rollback if needed
 
 ## Support
 
 For issues during migration:
 1. Check Vercel build logs
 2. Verify Formspree form ID is correct
-3. Ensure GitHub OAuth app is configured
-4. Confirm collaborators have repo access
+3. Verify Netlify Identity is enabled on Netlify site
+4. Ensure Git Gateway is configured correctly
 
 ## Files Changed
 

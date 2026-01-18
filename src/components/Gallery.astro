@@ -1,14 +1,11 @@
 ---
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getGalleryData } from '../lib/payload';
 
-// Load gallery data from CMS
-const galleryDataPath = path.join(process.cwd(), 'src/data/gallery.yaml');
-const galleryData = yaml.load(fs.readFileSync(galleryDataPath, 'utf8'));
+// Load gallery data from Payload CMS
+const galleryData = await getGalleryData();
 
 // Sort images by order
-const allImages = galleryData.images
+const allImages = galleryData?.images
   .sort((a, b) => a.order - b.order)
   .map(img => ({
     filename: img.filename,

@@ -1,13 +1,8 @@
 ---
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getSiteData, getPricingData } from '../lib/payload';
 
-const siteDataPath = path.join(process.cwd(), 'src/data/site.yaml');
-const pricingDataPath = path.join(process.cwd(), 'src/data/pricing.yaml');
-
-const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
-const pricingData = yaml.load(fs.readFileSync(pricingDataPath, 'utf8'));
+const siteData = await getSiteData();
+const pricingData = await getPricingData();
 
 // Structured Data - LodgingBusiness Schema
 const structuredData = {

@@ -1,10 +1,7 @@
 ---
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getPricingData } from '../lib/payload';
 
-const pricingDataPath = path.join(process.cwd(), 'src/data/pricing.yaml');
-const pricingData = yaml.load(fs.readFileSync(pricingDataPath, 'utf8'));
+const pricingData = await getPricingData();
 ---
 
 <section id="cenik" class="section bg-white">

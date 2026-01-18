@@ -1,10 +1,7 @@
 ---
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getFeaturesData } from '../lib/payload';
 
-const featuresDataPath = path.join(process.cwd(), 'src/data/features.yaml');
-const featuresData = yaml.load(fs.readFileSync(featuresDataPath, 'utf8'));
+const featuresData = await getFeaturesData();
 
 // Icon map for SVG paths
 const iconMap = {

@@ -1,13 +1,8 @@
 ---
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getAboutData, getSiteData } from '../lib/payload';
 
-const aboutDataPath = path.join(process.cwd(), 'src/data/about.yaml');
-const siteDataPath = path.join(process.cwd(), 'src/data/site.yaml');
-
-const aboutData = yaml.load(fs.readFileSync(aboutDataPath, 'utf8'));
-const siteData = yaml.load(fs.readFileSync(siteDataPath, 'utf8'));
+const aboutData = await getAboutData();
+const siteData = await getSiteData();
 
 // Icon map for location-related SVG icons
 const iconMap = {

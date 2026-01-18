@@ -1,10 +1,8 @@
 ---
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getReviews } from '../lib/payload';
 
-const reviewsDataPath = path.join(process.cwd(), 'src/data/reviews.yaml');
-const reviewsData = yaml.load(fs.readFileSync(reviewsDataPath, 'utf8'));
+const reviews = await getReviews();
+const reviewsData = { reviews }; // Maintain structure for minimal changes
 ---
 
 <section id="recenze" class="section bg-white">

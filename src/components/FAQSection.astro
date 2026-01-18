@@ -1,11 +1,7 @@
 ---
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getFAQ } from '../lib/payload';
 
-const faqDataPath = path.join(process.cwd(), 'src/data/faq.yaml');
-const faqData = yaml.load(fs.readFileSync(faqDataPath, 'utf8'));
-const faqs = faqData.items;
+const faqs = await getFAQ();
 ---
 
 <section id="faq" class="section bg-sand-50">

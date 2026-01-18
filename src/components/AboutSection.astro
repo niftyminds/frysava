@@ -1,11 +1,8 @@
 ---
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getAboutData } from '../lib/payload';
 
-const aboutDataPath = path.join(process.cwd(), 'src/data/about.yaml');
-const aboutData = yaml.load(fs.readFileSync(aboutDataPath, 'utf8'));
-const slides = aboutData.about_slides;
+const aboutData = await getAboutData();
+const slides = aboutData?.about_slides || [];
 const totalSlides = slides.length;
 ---
 

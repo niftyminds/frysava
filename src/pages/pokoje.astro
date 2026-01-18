@@ -3,14 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import RoomCard from '../components/RoomCard.astro';
 import Footer from '../components/Footer.astro';
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getRoomsData } from '../lib/payload';
 
-const roomsDataPath = path.join(process.cwd(), 'src/data/rooms.yaml');
-const roomsData = yaml.load(fs.readFileSync(roomsDataPath, 'utf8'));
+const roomsData = await getRoomsData();
 
-const { hero, rooms, summary, stats_labels, filter_labels, featured_section, cta } = roomsData;
+const { hero, rooms, summary, stats_labels, filter_labels, featured_section, cta } = roomsData || {};
 
 // Počet pokojů podle patra
 const floorCounts = {

@@ -2,16 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import yaml from 'js-yaml';
-import fs from 'fs';
-import path from 'path';
+import { getPricingData } from '../lib/payload';
 
-const pricingDataPath = path.join(process.cwd(), 'src/data/pricing.yaml');
-const pricingData = yaml.load(fs.readFileSync(pricingDataPath, 'utf8'));
+const pricingData = await getPricingData();
 
-const checkinTime = pricingData.checkin_checkout?.checkin_from || '15:00';
-const checkoutTime = pricingData.checkin_checkout?.checkout_until || '10:00';
-const depositPercent = pricingData.payment?.deposit_percent || 50;
+const checkinTime = pricingData?.checkin_checkout?.checkin_from || '15:00';
+const checkoutTime = pricingData?.checkin_checkout?.checkout_until || '10:00';
+const depositPercent = pricingData?.payment?.deposit_percent || 50;
 ---
 
 <BaseLayout title="Rezervace - Chalupa na Fryšavě">
