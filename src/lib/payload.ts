@@ -3,7 +3,7 @@
  * Fetches content from Payload CMS API for Astro static builds
  */
 
-const PAYLOAD_API_URL = import.meta.env.PAYLOAD_API_URL || 'http://localhost:3000'
+const PAYLOAD_API_URL = import.meta.env.PUBLIC_PAYLOAD_API_URL || 'http://localhost:3006'
 
 interface PayloadResponse<T> {
   docs: T[]
@@ -161,6 +161,10 @@ export interface SiteData {
   }
   highlights?: { text: string }[]
   amenity_tags?: { tag: string }[]
+  blog_cta?: {
+    heading?: string
+    description?: string
+  }
 }
 
 export interface Review {
@@ -174,4 +178,68 @@ export interface Review {
 export interface FAQItem {
   question: string
   answer: string
+}
+
+export interface Media {
+  id: string
+  alt: string
+  caption?: string
+  category?: string
+  url: string
+  filename: string
+  mimeType: string
+  filesize: number
+  width: number
+  height: number
+  sizes?: {
+    thumbnail?: {
+      url: string
+      width: number
+      height: number
+    }
+    card?: {
+      url: string
+      width: number
+      height: number
+    }
+    hero?: {
+      url: string
+      width: number
+      height: number
+    }
+  }
+}
+
+export interface BlogPost {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  featuredImage: string | Media
+  gallery?: Array<{
+    image: string | Media
+  }>
+  category: string
+  tags?: Array<{ tag: string }>
+  relatedPosts?: Array<{ post: string | BlogPost }>
+  status: 'draft' | 'published'
+  publishedAt: string
+  author?: string
+}
+
+/**
+ * Get all published Blog posts (multi-document collection)
+ */
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  const response = await fetchPayload<BlogPost>('blog?where[status][equals]=published&sort=-publishedAt&depth=2')
+  return response.docs
+}
+
+/**
+ * Get single Blog post by slug
+ */
+export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  const response = await fetchPayload<BlogPost>(`blog?where[slug][equals]=${slug}&limit=1&depth=2`)
+  return response.docs[0] || null
 }

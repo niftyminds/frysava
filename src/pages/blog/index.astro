@@ -1,0 +1,193 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getBlogPosts, getSiteData, type Media } from '../../lib/payload';
+
+const blogPosts = await getBlogPosts();
+const siteData = await getSiteData();
+const heroImage = siteData?.hero_images?.[0] || { path: '/images/large/chalupa-frysava-pod-zakovou-horou-590d-570473.webp', alt: 'Chalupa na Fryšavě' };
+const ctaHeading = siteData?.blog_cta?.heading || 'Plánujete výlet do Orlických hor?';
+const ctaDescription = siteData?.blog_cta?.description || 'Ubytujte se v naší chalupě a poznejte krásy regionu na vlastní kůži.';
+
+// Helper functions for image handling
+function getImageUrl(image: string | Media | null | undefined): string {
+  if (!image) return '/images/blog/placeholder.jpg';
+  if (typeof image === 'string') return image;
+  return image.sizes?.card?.url || image.url || '/images/blog/placeholder.jpg';
+}
+
+function getImageAlt(image: string | Media | null | undefined): string {
+  if (!image) return 'Blog obrázek';
+  if (typeof image === 'string') return '';
+  return image.alt || 'Blog obrázek';
+}
+
+// Group by category for filtering
+const categories = [
+  { label: 'Vše', value: 'all' },
+  { label: 'Tipy na výlety', value: 'tipy-na-vylety' },
+  { label: 'Akce v okolí', value: 'akce-v-okoli' },
+  { label: 'Sezónní novinky', value: 'sezonni-novinky' },
+  { label: 'Aktuality', value: 'aktuality' },
+  { label: 'Doporučení', value: 'doporuceni' },
+];
+---
+
+<BaseLayout
+  title="Blog - Chalupa Frýšava"
+  description="Tipy na výlety, akce v okolí a novinky z Orlických hor"
+>
+  <Header variant="light" />
+
+  <!-- Hero Section with Cover Image -->
+  <section class="relative h-[60vh] md:h-[70vh] min-h-[400px] overflow-hidden">
+    <img
+      src={heroImage.path}
+      alt={heroImage.alt}
+      class="w-full h-full object-cover"
+      loading="eager"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60"></div>
+
+    <!-- Content Overlay -->
+    <div class="absolute inset-0 z-10 flex items-center justify-center">
+      <div class="container px-4 text-center">
+        <h1 class="text-4xl md:text-6xl font-serif font-bold text-white mb-4 drop-shadow-lg">
+          Blog
+        </h1>
+        <p class="text-lg md:text-2xl text-white/90 drop-shadow-md max-w-2xl mx-auto">
+          Tipy na výlety, akce v okolí a novinky z Orlických hor
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Filter -->
+  <section class="bg-white py-6 sticky top-20 z-10 shadow-sm">
+    <div class="container">
+      <div class="flex flex-wrap gap-2 justify-center" id="category-filter">
+        {categories.map((cat) => (
+          <button
+            data-category={cat.value}
+            class:list={[
+              'px-4 py-2 rounded-full border border-sand-200 text-sm font-medium transition-colors hover:bg-moss-50 hover:border-moss-300 filter-btn',
+              cat.value === 'all' && 'active'
+            ]}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Grid -->
+  <section class="section bg-sand-50">
+    <div class="container">
+      {blogPosts.length === 0 ? (
+        <div class="text-center py-16">
+          <p class="text-xl text-charcoal-600 mb-4">
+            Zatím zde nejsou žádné publikované články.
+          </p>
+          <p class="text-charcoal-500">
+            Brzy zde najdete tipy na výlety a aktuality z Orlických hor.
+          </p>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
+          {blogPosts.map((post) => (
+            <article
+              class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow blog-card"
+              data-category={post.category}
+            >
+              <a href={`/blog/${post.slug}`}>
+                <div class="aspect-video overflow-hidden">
+                  <img
+                    src={getImageUrl(post.featuredImage)}
+                    alt={getImageAlt(post.featuredImage) || post.title}
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div class="p-6">
+                  <div class="flex items-center gap-3 mb-3 text-sm text-charcoal-500">
+                    <span class="px-3 py-1 bg-moss-100 text-moss-700 rounded-full font-medium">
+                      {categories.find(c => c.value === post.category)?.label}
+                    </span>
+                    <time datetime={post.publishedAt}>
+                      {new Date(post.publishedAt).toLocaleDateString('cs-CZ', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                      })}
+                    </time>
+                  </div>
+                  <h2 class="text-xl font-serif font-semibold text-wood-900 mb-3 hover:text-moss-700 transition-colors">
+                    {post.title}
+                  </h2>
+                  <p class="text-charcoal-600 mb-4 line-clamp-3">
+                    {post.excerpt}
+                  </p>
+                  <div class="flex items-center text-moss-600 font-medium">
+                    Číst více
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </div>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section bg-moss-600">
+    <div class="container text-center">
+      <h2 class="text-3xl font-serif font-bold mb-4 text-white">
+        {ctaHeading}
+      </h2>
+      <p class="text-lg mb-8 text-white">
+        {ctaDescription}
+      </p>
+      <a href="/rezervace" class="inline-block bg-white text-moss-700 px-8 py-4 rounded-lg font-semibold hover:bg-sand-50 transition-colors">
+        Rezervovat pobyt
+      </a>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .filter-btn.active {
+    @apply bg-moss-600 text-white border-moss-600;
+  }
+</style>
+
+<script>
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const blogCards = document.querySelectorAll('.blog-card');
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+
+      // Update active state
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Filter cards
+      blogCards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        if (category === 'all' || cardCategory === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

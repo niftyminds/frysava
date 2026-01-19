@@ -1,0 +1,208 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getBlogPost, getBlogPosts, type Media } from '../../lib/payload';
+
+// Helper functions for image handling
+function getImageUrl(image: string | Media | null | undefined, size: 'hero' | 'card' | 'thumbnail' = 'hero'): string {
+  if (!image) return '/images/blog/placeholder.jpg';
+  if (typeof image === 'string') return image;
+  return image.sizes?.[size]?.url || image.url || '/images/blog/placeholder.jpg';
+}
+
+function getImageAlt(image: string | Media | null | undefined): string {
+  if (!image) return 'Blog obrázek';
+  if (typeof image === 'string') return '';
+  return image.alt || 'Blog obrázek';
+}
+
+function getImageCaption(image: string | Media | null | undefined): string {
+  if (!image) return '';
+  if (typeof image === 'string') return '';
+  return (image as Media).caption || '';
+}
+
+export async function getStaticPaths() {
+  const posts = await getBlogPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getBlogPost(slug!);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+// Format date
+const publishDate = new Date(post.publishedAt).toLocaleDateString('cs-CZ', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+
+// Get related posts (populate if needed)
+const relatedPosts = post.relatedPosts?.slice(0, 3) || [];
+---
+
+<BaseLayout
+  title={`${post.title} - Blog - Chalupa Frýšava`}
+  description={post.excerpt}
+>
+  <Header variant="light" />
+
+  <!-- Breadcrumb - Sticky -->
+  <nav class="sticky top-16 md:top-20 z-40 bg-white py-6 md:py-8 border-b border-sand-200 shadow-sm">
+    <div class="container">
+      <ol class="flex items-center gap-2 text-sm text-charcoal-700">
+        <li><a href="/" class="hover:text-moss-600 transition-colors">Domů</a></li>
+        <li class="text-charcoal-400">/</li>
+        <li><a href="/blog" class="hover:text-moss-600 transition-colors">Blog</a></li>
+        <li class="text-charcoal-400">/</li>
+        <li class="text-wood-900 font-semibold truncate max-w-[200px] sm:max-w-none">{post.title}</li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- Spacer to prevent content jump -->
+  <div class="h-16 md:h-20"></div>
+
+  <!-- Hero Image -->
+  <section class="relative h-[50vh] md:h-[60vh] overflow-hidden">
+    <img
+      src={getImageUrl(post.featuredImage, 'hero')}
+      alt={getImageAlt(post.featuredImage) || post.title}
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+    <div class="absolute bottom-0 left-0 right-0 p-8">
+      <div class="container">
+        <div class="max-w-4xl">
+          <h1 class="text-3xl md:text-5xl font-serif font-bold text-white mb-4">
+            {post.title}
+          </h1>
+          <div class="flex items-center gap-4 text-white/90">
+            <time datetime={post.publishedAt}>{publishDate}</time>
+            {post.author && <span>• {post.author}</span>}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Article Content -->
+  <article class="section bg-white">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <!-- Tags -->
+        {post.tags && post.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mb-8">
+            {post.tags.map((t) => (
+              <span class="px-3 py-1 bg-sand-100 text-charcoal-700 rounded-full text-sm">
+                #{t.tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <!-- Content -->
+        <div class="prose prose-lg max-w-none prose-headings:font-serif prose-headings:text-wood-900 prose-a:text-moss-600 prose-a:no-underline hover:prose-a:underline">
+          {post.content.split('\n').map((paragraph) => {
+            if (paragraph.trim().startsWith('**') && paragraph.trim().endsWith('**')) {
+              return <h3>{paragraph.replace(/\*\*/g, '')}</h3>
+            }
+            if (paragraph.trim()) {
+              return <p>{paragraph}</p>
+            }
+            return null;
+          })}
+        </div>
+
+        <!-- Gallery -->
+        {post.gallery && post.gallery.length > 0 && (
+          <div class="mt-12">
+            <h3 class="text-2xl font-serif font-semibold text-wood-900 mb-6">Fotogalerie</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {post.gallery.map((item) => {
+                const caption = getImageCaption(item.image);
+                return (
+                  <figure class="rounded-lg overflow-hidden shadow-md">
+                    <img
+                      src={getImageUrl(item.image, 'card')}
+                      alt={getImageAlt(item.image)}
+                      class="w-full h-64 object-cover"
+                    />
+                    {caption && (
+                      <figcaption class="p-3 bg-sand-50 text-sm text-charcoal-600">
+                        {caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </article>
+
+  <!-- Related Posts -->
+  {relatedPosts.length > 0 && (
+    <section class="section bg-sand-50">
+      <div class="container">
+        <h2 class="text-3xl font-serif font-bold text-wood-900 mb-8 text-center">
+          Mohlo by vás zajímat
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {relatedPosts.map((related) => {
+            const relatedPost = typeof related.post === 'string' ? null : related.post;
+            if (!relatedPost) return null;
+
+            return (
+              <article class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                <a href={`/blog/${relatedPost.slug}`}>
+                  <div class="aspect-video overflow-hidden">
+                    <img
+                      src={getImageUrl(relatedPost.featuredImage, 'card')}
+                      alt={getImageAlt(relatedPost.featuredImage) || relatedPost.title}
+                      class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div class="p-4">
+                    <h3 class="font-serif font-semibold text-wood-900 mb-2 hover:text-moss-700 transition-colors">
+                      {relatedPost.title}
+                    </h3>
+                    <p class="text-sm text-charcoal-600 line-clamp-2">
+                      {relatedPost.excerpt}
+                    </p>
+                  </div>
+                </a>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA Section -->
+  <section class="section bg-moss-600">
+    <div class="container text-center">
+      <h2 class="text-3xl font-serif font-bold mb-4 text-white">
+        Zaujal vás tento článek?
+      </h2>
+      <p class="text-lg mb-8 text-white">
+        Přijeďte to zažít na vlastní kůži. Rezervujte si termín v naší chalupě.
+      </p>
+      <a href="/rezervace" class="inline-block bg-white text-moss-700 px-8 py-4 rounded-lg font-semibold hover:bg-sand-50 transition-colors">
+        Rezervovat pobyt
+      </a>
+    </div>
+  </section>
+
+  <Footer />
+</BaseLayout>
