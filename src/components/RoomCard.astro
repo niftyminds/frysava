@@ -20,9 +20,9 @@ const floorLabels = {
   'podkroví': 'Podkroví'
 };
 
-// Use images from room data, or fallback to default
+// Extract image paths from Payload 3.x structure: [{id, path}] -> ["path"]
 const images = room.images && room.images.length > 0
-  ? room.images
+  ? room.images.map(img => typeof img === 'string' ? img : img.path)
   : ['/images/large/exterier-chalupy-c9c9-570474.webp'];
 
 const hasMultipleImages = images.length > 1;

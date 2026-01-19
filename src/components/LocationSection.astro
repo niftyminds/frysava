@@ -75,7 +75,7 @@ const iconMap = {
                   <Fragment set:html={iconMap['chevron']} />
                 </svg>
               </div>
-              <span class="text-charcoal-700">{activity}</span>
+              <span class="text-charcoal-700">{typeof activity === 'string' ? activity : activity.activity}</span>
             </li>
           ))}
         </ul>
@@ -97,7 +97,7 @@ const iconMap = {
                   <Fragment set:html={iconMap['chevron']} />
                 </svg>
               </div>
-              <span class="text-charcoal-700">{activity}</span>
+              <span class="text-charcoal-700">{typeof activity === 'string' ? activity : activity.activity}</span>
             </li>
           ))}
         </ul>

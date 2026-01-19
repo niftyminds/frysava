@@ -126,7 +126,7 @@ const pricingData = await getPricingData();
                     <p class="font-semibold text-wood-900 mb-2">Způsoby platby:</p>
                     <ul class="list-disc list-inside space-y-1 ml-4">
                       {pricingData.payment.accepted_methods.map((method) => (
-                        <li class="text-charcoal-700">{method}</li>
+                        <li class="text-charcoal-700">{typeof method === 'string' ? method : method.method}</li>
                       ))}
                     </ul>
                   </div>
@@ -157,7 +157,7 @@ const pricingData = await getPricingData();
     {pricingData.notes && (
       <div class="max-w-4xl mx-auto mt-8 text-center">
         {pricingData.notes.map((note) => (
-          <p class="text-sm text-charcoal-600 italic">{note}</p>
+          <p class="text-sm text-charcoal-600 italic">{typeof note === 'string' ? note : note.note}</p>
         ))}
       </div>
     )}
