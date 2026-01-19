@@ -8,8 +8,8 @@ export default defineConfig({
   site: 'https://frysava.cz', // Production domain
   output: 'static',
   adapter: vercel({
-    webAnalytics: { enabled: true }, // Vercel Web Analytics
-    imageService: true,              // Vercel Image Optimization
+    webAnalytics: { enabled: false }, // Disabled - using GA4 instead
+    imageService: true,               // Vercel Image Optimization
   }),
   integrations: [
     tailwind(),
