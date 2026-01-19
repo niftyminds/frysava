@@ -6,7 +6,7 @@ import vercel from '@astrojs/vercel';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://frysava.cz', // Production domain
-  output: 'hybrid', // Hybrid mode: static by default, opt-in to SSR with prerender=false
+  output: 'server', // Server-side rendering for all pages
   adapter: vercel({
     webAnalytics: { enabled: false }, // Disabled - using GA4 instead
     imageService: true,               // Vercel Image Optimization
