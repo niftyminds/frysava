@@ -4,6 +4,9 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { getBlogPosts, getSiteData, type Media } from '../../lib/payload';
 
+// Enable SSR for this page (render on-demand instead of at build time)
+export const prerender = false;
+
 const blogPosts = await getBlogPosts();
 const siteData = await getSiteData();
 const heroImage = siteData?.hero_images?.[0] || { path: '/images/large/chalupa-frysava-pod-zakovou-horou-590d-570473.webp', alt: 'Chalupa na Fryšavě' };
